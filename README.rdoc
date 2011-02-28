@@ -1,0 +1,105 @@
+= Intro
+There are many static data in application.
+In a student application,there will be some static data like diploma kind,school and city.This gem can map these static data to a Dictionary#method like Dictionary#student_diploma_kind which return data list of diploma kind and a Student.named_school like @student.named_city which return city name of @student city
+
+= Usage
+== Installation
+Rail3
+        gem "rails_dictionary",:git => 'git://github.com/raykin/rails_dictionary'
+or
+        gem 'rails_dictionary'
+
+== Sample
+In this usage sample,there are three tables.
+=== Table Definition
+Make sure you have two tables which named as dict_types and dictionaries.
+For version 0.0.1,I'm not going to add more configurations.
+The students table is not required.
+    create_table :dict_types do |t|
+      t.string :name
+      t.string :comment
+      t.timestamps
+    end
+    create_table :dictionaries do |t|
+      t.string :name_en
+      t.string :name_zh
+      t.string :name_fr
+      t.integer :dict_type_id
+      t.timestamps
+    end
+    create_table :students do |t|
+      t.string :email
+      t.integer :city
+      t.integer :school
+      t.timestamps
+    end
+
+=== Class Definition
+Method acts_as_dict_type,acts_as_dictionary,acts_as_dict_slave like other simple gem method used as class method.
+Here is what should be like.Student model can be other models.
+      class DictType < ActiveRecord::Base
+        acts_as_dict_type
+      end
+
+      class Dictionary < ActiveRecord::Base
+        acts_as_dictionary
+      end
+
+      class Student < ActiveRecord::Base
+        acts_as_dict_slave
+      end
+
+=== Sample Data
+Conventions over configuration make magic again.
+The name value convention of DictType is "model_column".Here the city and school column of student model are static values that will be mapping to dynamic method,so the DictType value should be as following code according convention.
+Dictionary value has simple convention,just keep the name structure as "name_locale".Dictionary store the real static data that will not change in certain period.
+Student is a slave model which will be automatically generate a (or a list of)belongs_to associations to dictionary and a list of dynamic query method according to DictType data.
+    DictType.find(1).name => "student_city"
+    DictType.find(2).name => "student_school"
+    DictType.count => 2
+    Dictionary.count => 2
+    Dictionary.find(5) =>
+    #<Dictionary id: 1, name_en: "shanghai", name_zh: "上海", name_fr: "shanghai", dict_type_id: 1, created_at: "2011-02-27 13:28:55", updated_at: "2011-02-27 13:28:55">
+    Dictionary.find(6) =>
+    #<Dictionary id: 2, name_en: "beijing", name_zh: "北京", name_fr: "Pékin", dict_type_id: 1, created_at: "2011-02-27 13:28:55", updated_at: "2011-02-27 13:28:55">
+    Student.find(1) =>
+    #<Student id: 1, email: "beijing@dict.com", city: 6, school: nil, created_at: "2011-02-27 13:28:55", updated_at: "2011-02-27 13:28:55">
+    Student.find(2) =>
+    #<Student id: 2, email: "shanghai@dict.com", city: 5, school: nil, created_at: "2011-02-27 13:28:55", updated_at: "2011-02-27 13:28:55">
+
+== Methods and results (relies on the above data)
+   DictType.all_cached => return cache of DictType.all
+   DictType.all_types => %w[student_city student_school]
+   Dictionary.student_city => [Dictionary.find(5),Dictionary.find(6)]
+   # student_city is a dynamic method which returns a list of dictionary object which dict_type is student_city.Actually Dictionary will has as many dynamic methods as DictType.count and the dynamic method name is DictType.name,so there is another dynamic method which return nil
+   Dictionary.student_school => []
+   Dictionary.student_city(:locale => :en) => [["shanghai",1],["beijing",2]]
+so you can use these method in form select like
+   select :student,:city,Dictionary.student_city
+this select method has a more clear format which may do some other magic coding
+   Student.find(1).named_city = "beijing"
+Here is an other solution for international translation.
+   Student.find(1).named_city(:zh) = "北京"
+   Student.find(1).named_city(:fr) = "Pékin"
+Student has 2 belongs_to assocition which named as city_dict and school_dict,the naming convention is columname_dict.
+   Student.find(1).city_dict = Dictionary.find(6)
+
+
+= Practical Suggestion
+If you start a new application and there are more than 10 kinds of static data,you may have a try with the gem.
+However,if you see many static data in an old system and want to refactor it,the decision would be judged by the real situations.
+
+= Warnning
+The most used debug method would be DictType.all_types and Dictionary.student_city(or other dynamic generate method)
+When you get some confused with these method,try running
+     rails tmp:clear
+cause these methods all return static data,I just caches these output for better performance.If you change db data in db console(not through Rails) like running
+     delete from dict_types;
+The rails cache would not refresh.
+In short,when you confused with the debug data,try running "rails tmp:clear" first.
+
+= TODO & Problems
+Get a more smart method(Rails way method) to get all Model Class and there is a problem with it.Class like Ckeditor::Asset will not be recognized.
+
+= Help
+Need an friendly english native guy to help me improve this readme to make it more clear and readable.
