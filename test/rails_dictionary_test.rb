@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# min test
 require "test/unit"
 require "active_support"
 require "active_record"
@@ -7,7 +6,7 @@ require "ruby-debug"
 Object.const_set "RAILS_CACHE", ActiveSupport::Cache.lookup_store
 require "active_support/cache"
 require "rails"
-# $: << "/home/raykin/studio/dictionary/lib" # tmply added for local testing
+$: << "/home/raykin/studio/rails_dictionary/lib" # tmply added for local testing
 require "#{File.dirname(__FILE__)}/../lib/rails_dictionary.rb"
 
 ActiveRecord::Base.establish_connection(:adapter => "sqlite3", :database => ":memory:")
