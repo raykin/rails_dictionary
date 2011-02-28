@@ -17,7 +17,7 @@ module ActsAsDictionary
           if DictType.all_types.include? method_id.to_s
             Rails.cache.fetch("Dictionary.#{method_name}") { Dictionary.joins(:dict_type).where('dict_types.name'=>method_name).all }
             listed_attr=Rails.cache.read("Dictionary.#{method_name}").dup
-            if options.keys.include? :locale
+            if options.keys.include? :locale or options.keys.include? "locale"
               locale="name_#{options[:locale]}"
               listed_attr.map! { |a| [a.send(locale),a.id] }
               listed_attr.sort {|a,b| a.last <=> b.last } # maybe remove this one

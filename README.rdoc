@@ -75,8 +75,9 @@ Student is a slave model which will be automatically generate a (or a list of)be
    Dictionary.student_school => []
    Dictionary.student_city(:locale => :en) => [["shanghai",1],["beijing",2]]
 so you can use these method in form select like
-   select :student,:city,Dictionary.student_city
-this select method has a more clear format which may do some other magic coding
+   collection_select :student,:city,Dictionary.student_city,:id,:name_en
+   select :student,:city,Dictionary.student_city(params)
+if params contains :locale => :fr,then it would return a list of french name of student city (from name_fr in Dictioanry)
    Student.find(1).named_city = "beijing"
 Here is an other solution for international translation.
    Student.find(1).named_city(:zh) = "北京"
