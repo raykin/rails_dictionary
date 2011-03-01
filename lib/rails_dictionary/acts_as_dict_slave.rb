@@ -15,7 +15,7 @@ module ActsAsDictSlave
 
     # return columns that exist in DictType#tab_and_column
     def columns_in_dict_type
-      DictType.tab_and_column[self.name.downcase.to_sym]
+      DictType.tab_and_column[self.name.underscore.to_sym]
     end
 
     # columns which map to dictionary
