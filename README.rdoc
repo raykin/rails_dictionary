@@ -14,7 +14,9 @@ In this usage sample,there are three tables.
 === Table Definition
 Make sure you have two tables which named as dict_types and dictionaries.
 For version 0.0.1,I'm not going to add more configurations.
+Table dictionaries has one conventions on column naming: name_locale.So the name_fr means this column have a french value,you can see more usage later.
 The students table is not required.
+
     create_table :dict_types do |t|
       t.string :name
       t.string :comment
@@ -90,9 +92,9 @@ Student has 2 belongs_to assocition which named as city_dict and school_dict,the
 If you start a new application and there are more than 10 kinds of static data,you may have a try with the gem.
 However,if you see many static data in an old system and want to refactor it,the decision would be judged by the real situations.
 
-= Warnning
+= Beware
 The most used debug method would be DictType.all_types and Dictionary.student_city(or other dynamic generate method)
-When you get some confused with these method,try running
+When you get some confused with the output of these method,try running
      rails tmp:clear
 cause these methods all return static data,I just caches these output for better performance.If you change db data in db console(not through Rails) like running
      delete from dict_types;
