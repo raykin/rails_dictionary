@@ -103,6 +103,7 @@ In short,when you confused with the debug data,try running "rails tmp:clear" fir
 
 = TODO & Problems
 Get a more smart method(Rails way method) to get all Model Class and there is a problem with it.Class like Ckeditor::Asset will not be recognized.
+Add generators.
 
 = Help
 Need an friendly english native guy to help me improve this readme to make it more clear and readable.
