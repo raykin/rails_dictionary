@@ -108,6 +108,7 @@ class DictTypeTest < Test::Unit::TestCase
     assert_equal %w[city school],Student.columns_in_dict_type
     assert_equal %w[city school],Student.dict_columns
     assert_equal "shanghai",@stu_shanghai.named_city(:en)
+    assert_equal "shanghai",@stu_shanghai.named_city("")
     assert_equal "Pékin",@stu_beijing.named_city(:fr)
   end
 

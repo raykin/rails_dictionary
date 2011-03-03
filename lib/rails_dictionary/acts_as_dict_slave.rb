@@ -48,8 +48,8 @@ module ActsAsDictSlave
       belongs_to_name="#{method_name.to_s}_dict".to_sym
       method_name="named_#{method_name.to_s}"
       define_method(method_name) do | locale=:en |
-        # arg.first ? locale = "name_#{arg.first}" : locale ='name_en'
-        locale ="name_#{locale}"
+        locale = locale.presence || :en
+        locale = "name_#{locale}"
         self.send(belongs_to_name).try(:send,locale)
       end
     end
