@@ -2,11 +2,11 @@
 require "test/unit"
 require "active_support"
 require "active_record"
-require "ruby-debug"
+require "ruby-debug" # coupled with debugger to debug code
 Object.const_set "RAILS_CACHE", ActiveSupport::Cache.lookup_store
 require "active_support/cache"
 require "rails"
-# $: << "/home/raykin/studio/rails_dictionary/lib" # tmply added for local testing
+$: << "/home/raykin/studio/rails_dictionary/lib" # tmply added for local testing
 require "#{File.dirname(__FILE__)}/../lib/rails_dictionary.rb"
 
 ActiveRecord::Base.establish_connection(:adapter => "sqlite3", :database => ":memory:")
@@ -73,8 +73,6 @@ class DictTypeTest < Test::Unit::TestCase
     @dy_beijing=Dictionary.create! name_en: "beijing",name_zh: "北京",name_fr: "Pékin",dict_type_id: @dt_stu_city.id
     @stu_beijing=Student.create! email: "beijing@dict.com",city: @dy_beijing.id
     @stu_shanghai=Student.create! email: "shanghai@dict.com",city: @dy_shanghai.id
-    Student.acts_as_dict_slave
-    # the acts_as_dict_slave need real data to generate dynamic method
   end
 
   def teardown
@@ -105,11 +103,18 @@ class DictTypeTest < Test::Unit::TestCase
 
   # test dynamic instance methods in slave model
   def test_named_city
+    Student.acts_as_dict_slave
+    # the acts_as_dict_slave need real data to generate dynamic method
     assert_equal %w[city school],Student.columns_in_dict_type
     assert_equal %w[city school],Student.dict_columns
     assert_equal "shanghai",@stu_shanghai.named_city(:en)
     assert_equal "shanghai",@stu_shanghai.named_city("")
     assert_equal "Pékin",@stu_beijing.named_city(:fr)
+  end
+
+  def test_named_city_with_default_locale
+    Student.acts_as_dict_slave :locale => :fr
+    assert_equal "Pékin",@stu_beijing.named_city
   end
 
   def test_delete_dicts_cache
