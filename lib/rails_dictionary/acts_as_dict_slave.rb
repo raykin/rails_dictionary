@@ -6,11 +6,11 @@ module ActsAsDictSlave
   module ClassMethods
     # :except - remove dict mapping column
     # :add - add dict mapping column
-    # :locale - add and initialize class attribute default_locale
+    # :locale - add and initialize class attribute default_dict_locale
     def acts_as_dict_slave(ops={})
-      class_attribute :default_locale,:instance_writer => false
-      #(debugger;self.default_locale = ops[:locale]) if ops[:locale]
-      self.default_locale = ops[:locale] if ops[:locale]
+      class_attribute :default_dict_locale,:instance_writer => false
+      #cattr_accessor :dict_columns
+      self.default_dict_locale = ops[:locale] if ops[:locale]
       @@dict_columns = dict_columns(ops)
       unless @@dict_columns.nil?
 
@@ -50,7 +50,7 @@ module ActsAsDictSlave
   module DynamicInsMethods
     # generate dynamic instance method named_column to slave model
     # def named_city(locale=nil)
-    #   locale = locale.presence || default_locale.presence || :en
+    #   locale = locale.presence || default_dict_locale.presence || :en
     #   locale = "name_#{locale}"
     #   self.send(city_dict).try(:send,locale)
     # end
@@ -58,7 +58,7 @@ module ActsAsDictSlave
       belongs_to_name="#{method_name.to_s}_dict".to_sym
       method_name="named_#{method_name.to_s}"
       define_method(method_name) do | locale=nil |
-        locale = locale.presence || default_locale.presence || :en
+        locale = locale.presence || default_dict_locale.presence || :en
         locale = "name_#{locale}"
         self.send(belongs_to_name).try(:send,locale)
       end
