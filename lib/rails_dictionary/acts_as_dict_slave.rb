@@ -9,11 +9,10 @@ module ActsAsDictSlave
     # :locale - add and initialize class attribute default_dict_locale
     def acts_as_dict_slave(ops={})
       class_attribute :default_dict_locale,:instance_writer => false
-      #cattr_accessor :dict_columns
+      cattr_accessor :dict_mapping_columns,:instance_writes => false
       self.default_dict_locale = ops[:locale] if ops[:locale]
-      @@dict_columns = dict_columns(ops)
-      unless @@dict_columns.nil?
-
+      self.dict_mapping_columns = dict_columns(ops)
+      unless dict_mapping_columns.nil?
         add_dynamic_column_method
       end
     end
@@ -42,8 +41,8 @@ module ActsAsDictSlave
     # add a belongs_to(Dictionary) association and a named_{column} method
     def add_dynamic_column_method
       self.extend(DynamicInsMethods)
-      @@dict_columns.each { |e| belongs_to "#{e.to_s}_dict".to_sym,class_name: "Dictionary",foreign_key: e }
-      @@dict_columns.each { |ele| named_dict_value ele.to_sym }
+      dict_mapping_columns.each { |e| belongs_to "#{e.to_s}_dict".to_sym,class_name: "Dictionary",foreign_key: e }
+      dict_mapping_columns.each { |ele| named_dict_value ele.to_sym }
     end
   end
 
