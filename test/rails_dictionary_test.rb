@@ -58,8 +58,10 @@ end
 class CoreExtTest < Test::Unit::TestCase
   def test_array
     expected_hash={:student => %w[school city],:admin => %w[role]}
+    blank_hash={}
     assert_equal expected_hash, %w[student_school student_city admin_role].extract_to_hash(%w[student admin])
     assert_equal expected_hash, %w[root student_school student_city admin_role].extract_to_hash(%w[student admin])
+    assert_equal blank_hash, %w[root students_school students_city].extract_to_hash(%w[student])
   end
 end
 
