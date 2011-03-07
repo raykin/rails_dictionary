@@ -32,16 +32,13 @@ module ActsAsDictType
         # TODO: get a more accurate method name
         # parse the name to get which column and model are listed in DictType
         def self.tab_and_column
-          @tab_and_column={}
-          @all_types=all_types
-          # TODO: any better way to retrive the class name in app/model ?
-          # Here maybe a problem when class like Ckeditor::Asset(.name.underscore => "ckeditor/asset"
-          all_tabs=ActiveRecord::Base.connection.tables.sort.reject! do |t|
-            ['schema_migrations', 'sessions'].include?(t)
-          end
-          all_class=all_tabs.map(&:singularize)
-          all_tabs=all_class
-          @tab_and_column=@all_types.extract_to_hash(all_tabs)
+          tab_and_column={}
+          # There are two chooses,one is subclasses the other is descendants,
+          # I don't know which is better,but descendants contains subclass of subclass,it contains more.
+          # Class like +Ckeditor::Asset+ transfer to "ckeditor/asset",but we can not naming method like that,
+          # So it still not support, the solution may be simple,just make another convention to escape "/"
+          all_model_class=ActiveRecord::Base.descendants.map(&:name).map(&:underscore)
+          tab_and_column=all_types.extract_to_hash(all_model_class)
         end
       end
     end
