@@ -9,7 +9,15 @@ module ActsAsDictionary
       belongs_to :dict_type
       after_save :delete_dicts_cache
       after_destroy :delete_dicts_cache
-      scope :dict_type_name_eq,lambda {|method_name| joins(:dict_type).where("dict_types.name" => method_name).all}
+
+      # Return an instance of array
+      def dict_type_name_eq(method_name)
+        joins(:dict_type).where("dict_types.name" => method_name).all
+      end
+      #Following design is not successed with sqlite3 in test
+      # scope :dict_type_name_eq,lambda {|method_name| joins(:dict_type).where("dict_types.name" => method_name)}
+      # remove the all seems not pass test,return following errors
+      # TypeError: no marshal_dump is defined for class SQLite3::Database
       include InstanceMethods
       # Generate methods like Dictionary.student_city
       # Dictionary.student_city - a list of dictionary object which dict type is student_city
@@ -19,8 +27,9 @@ module ActsAsDictionary
       def self.method_missing(method_id,options={},&block)
         method_name=method_id.to_s.downcase
         if DictType.all_types.include? method_id.to_s
-          Rails.cache.fetch("Dictionary.#{method_name}") { Dictionary.dict_type_name_eq(method_name) }
+          Rails.cache.fetch("Dictionary.#{method_name}") { dict_type_name_eq(method_name) }
           listed_attr=Rails.cache.read("Dictionary.#{method_name}").dup
+          # Instance of activerelation can not be dup?
           if options.keys.include? :locale or options.keys.include? "locale"
             locale="name_#{ options[:locale] }"
             listed_attr.map! { |a| [a.send(locale),a.id] }

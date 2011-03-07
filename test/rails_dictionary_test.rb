@@ -95,14 +95,6 @@ class DictTypeTest < Test::Unit::TestCase
     assert_equal "student_school",DictType.revert(@dt_stu_school.id)
   end
 
-  def test_dictionary_method_missing
-    assert_equal [["shanghai",1],["beijing",2]],Dictionary.student_city(:locale => :en)
-  end
-
-  def test_dictionary_method_missing_with_locale
-    assert_equal [["上海", 1], ["北京", 2]],Dictionary.student_city(:locale => :zh)
-  end
-
   # test dynamic instance methods in slave model
   def test_named_city
     Student.acts_as_dict_slave
@@ -117,6 +109,14 @@ class DictTypeTest < Test::Unit::TestCase
   def test_named_city_with_default_locale
     Student.acts_as_dict_slave :locale => :fr
     assert_equal "Pékin",@stu_beijing.named_city
+  end
+
+  def test_dictionary_method_missing
+    assert_equal [["shanghai",1],["beijing",2]],Dictionary.student_city(:locale => :en)
+  end
+
+  def test_dictionary_method_missing_with_locale
+    assert_equal [["上海", 1], ["北京", 2]],Dictionary.student_city(:locale => :zh)
   end
 
   def test_delete_dicts_cache

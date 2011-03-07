@@ -103,7 +103,7 @@ In short,when you confused with the debug data,try running "rails tmp:clear" fir
 
 = TODO & Problems
 There are no convention and implemention to map Class like Ckeditor::Asset to a method.
-Add generators.
+Add generators. Rewrite Testing,make it more maintainable.
 
 = Help
 Need an friendly english native guy to help me improve this readme to make it more clear and readable.
