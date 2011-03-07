@@ -30,7 +30,7 @@ module ActsAsDictType
         end
 
         # TODO: get a more accurate method name
-        # parse the name to get which column and model are listed in DictType
+        # Parse the name value to get which column and model are listed in DictType
         def self.tab_and_column
           tab_and_column={}
           # There are two chooses,one is subclasses the other is descendants,
