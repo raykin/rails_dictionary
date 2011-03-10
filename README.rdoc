@@ -13,7 +13,7 @@ or
 In this simple sample,there are three tables.
 === Table Definition
 Make sure you have two tables which named as dict_types and dictionaries.
-Table dictionaries has one conventions of naming column : +name_locale+.So the name_fr means this column have a french value,you can see more usage later.
+Table dictionaries has one convention of naming column : name_locale.So the name_fr means this column have a french value,you can see more usage later.
 The students table is not required and changed with your app.
 
     create_table :dict_types do |t|
