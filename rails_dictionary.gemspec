@@ -9,8 +9,8 @@ Gem::Specification.new do |s|
   s.authors     = ["raykin"]
   s.email       = ["raykincoldxiao@campus.com"]
   s.homepage    = "https://github.com/raykin/rails_dictionary"
-  s.summary     = %q{dictionary data for application}
-  s.description = %q{mapping static data of web application to Dictionary class}
+  s.summary     = %q{dictionary data for web application}
+  s.description = %q{Rails plugin for mapping static data of web application to Dictionary class}
 
   s.rubyforge_project = "rails_dictionary"
 
