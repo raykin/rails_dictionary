@@ -10,31 +10,43 @@ or
         gem "rails_dictionary",:git => 'git://github.com/raykin/rails_dictionary'
 
 == Sample
-In this simple sample,there are three tables.
+Run following task will give you a simple start.Maybe you should try it in a new application first.
+    rake dicts:generate
+    rake dicts:sample_slave
+    rake db:migrate
+    rake dicts:sample_data
+These task is just generate table dictionaries,dict_types,students and some sample data.The data should be
+      irb(main):013:0> DictType.select("id,name").all
+        DictType Load (0.4ms)  SELECT id,name FROM `dict_types`
+        +----+----------------+
+        | id | name           |
+        +----+----------------+
+        | 1  | student_city   |
+        | 2  | student_school |
+        +----+----------------+
+        2 rows in set
+       irb(main):014:0> Dictionary.select("id,name_en,name_zh,name_fr,dict_type_id").all
+         Dictionary Load (1.2ms)  SELECT id,name_en,name_zh,name_fr,dict_type_id FROM `dictionaries`
+         +----+----------+---------+----------+--------------+
+         | id | name_en  | name_zh | name_fr  | dict_type_id |
+         +----+----------+---------+----------+--------------+
+         | 1  | shanghai | 上海      | shanghai | 1            |
+         | 2  | beijing  | 北京      | Pékin    | 1            |
+         +----+----------+---------+----------+--------------+
+         2 rows in set
+       irb(main):016:0> Student.select("id,email,city,school").all
+         Student Load (0.4ms)  SELECT id,email,city,school FROM `students`
+         +----+-------------------+------+--------+
+         | id | email             | city | school |
+         +----+-------------------+------+--------+
+         | 1  | beijing@dict.com  | 4    |        |
+         | 2  | shanghai@dict.com | 3    |        |
+         +----+-------------------+------+--------+
+         2 rows in set
 === Table Definition
 Make sure you have two tables which named as dict_types and dictionaries.
-Table dictionaries has one convention of naming column : name_locale.So the name_fr means this column have a french value,you can see more usage later.
-The students table is not required and changed with your app.
-
-    create_table :dict_types do |t|
-      t.string :name
-      t.string :comment
-      t.timestamps
-    end
-    create_table :dictionaries do |t|
-      t.string :name_en
-      t.string :name_zh
-      t.string :name_fr
-      t.integer :dict_type_id
-      t.timestamps
-    end
-    create_table :students do |t|
-      t.string :email
-      t.integer :city
-      t.integer :school
-      t.timestamps
-    end
-
+Table dictionaries has one convention of naming column : +name_locale+.So the name_fr means this column have a french value,you can see more usage later.
+The students table is not required and variable by your application.
 === Class Definition
 Here is what should be like.Student model can be other models.
 
@@ -52,7 +64,7 @@ Here is what should be like.Student model can be other models.
 
 === Sample Data
 Conventions over configuration make magic again.
-The name value convention of DictType is "model_column".Here the city and school column of student model are static value column that will be mapping to dynamic method,so the DictType value should be as following.
+The name value convention of DictType is +"model_column"+.Here the city and school column of student model are static value column that will be mapping to dynamic method,so the DictType value should be as following.
     DictType.find(1).name => "student_city"
     DictType.find(2).name => "student_school"
 Dictionary store the real static data.
