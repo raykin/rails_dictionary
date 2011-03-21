@@ -15,7 +15,7 @@ Run following task will give you a simple start.Maybe you should try it in a new
     rake dicts:sample_slave
     rake db:migrate
     rake dicts:sample_data
-These task is just generate table dictionaries,dict_types,students and some sample data.The data should be
+These task are just generate table dictionaries,dict_types,students and some sample data.The data should be
       irb(main):013:0> DictType.select("id,name").all
         DictType Load (0.4ms)  SELECT id,name FROM `dict_types`
         +----+----------------+
@@ -43,10 +43,13 @@ These task is just generate table dictionaries,dict_types,students and some samp
          | 2  | shanghai@dict.com | 3    |        |
          +----+-------------------+------+--------+
          2 rows in set
+There is one conventions of DictType.name value.All value of DictType.name is "model_method" : student is model and city is method of student model.
+
 === Table Definition
 Make sure you have two tables which named as dict_types and dictionaries.
-Table dictionaries has one convention of naming column : +name_locale+.So the name_fr means this column have a french value,you can see more usage later.
+Table dictionaries has one convention of naming column : name_locale.So the name_fr means this column have a french value,you can see more usage later.
 The students table is not required and variable by your application.
+
 === Class Definition
 Here is what should be like.Student model can be other models.
 
@@ -62,39 +65,23 @@ Here is what should be like.Student model can be other models.
         acts_as_dict_slave
       end
 
-=== Sample Data
-Conventions over configuration make magic again.
-The name value convention of DictType is +"model_column"+.Here the city and school column of student model are static value column that will be mapping to dynamic method,so the DictType value should be as following.
-    DictType.find(1).name => "student_city"
-    DictType.find(2).name => "student_school"
-Dictionary store the real static data.
-    Dictionary.find(5) =>
-    #<Dictionary id: 1, name_en: "shanghai", name_zh: "上海", name_fr: "shanghai", dict_type_id: 1, created_at: "2011-02-27 13:28:55", updated_at: "2011-02-27 13:28:55">
-    Dictionary.find(6) =>
-    #<Dictionary id: 2, name_en: "beijing", name_zh: "北京", name_fr: "Pékin", dict_type_id: 1, created_at: "2011-02-27 13:28:55", updated_at: "2011-02-27 13:28:55">
-Student is a slave model which use the static data.It generate a list of belongs_to associations to dictionary and a list of dynamic query method.
-    Student.find(1) =>
-    #<Student id: 1, email: "beijing@dict.com", city: 6, school: nil, created_at: "2011-02-27 13:28:55", updated_at: "2011-02-27 13:28:55">
-    Student.find(2) =>
-    #<Student id: 2, email: "shanghai@dict.com", city: 5, school: nil, created_at: "2011-02-27 13:28:55", updated_at: "2011-02-27 13:28:55">
-
-== Methods and results (relies on the above data)
-   DictType.all_cached => return cache of DictType.all
-   DictType.all_types => %w[student_city student_school]
-   Dictionary.student_city => [Dictionary.find(5),Dictionary.find(6)]
-Student_city is a dynamic method which returns a list of dictionary object which dict_type is "student_city".Actually Dictionary will have as many dynamic methods as DictType.count and each dynamic method name is DictType.name,so there is another dynamic method which return [](This methods returning a list of array,no ActiveRelation).
-   Dictionary.student_school => []
-   Dictionary.student_city(:locale => :en) => [["shanghai",1],["beijing",2]]
-You can use this method in form select like
+== Features : Methods and results (relies on the above data)
+   DictType.all_cached #=> return cache of DictType.all
+   DictType.all_types = %w[student_city student_school] # also cached
+   Dictionary.student_city #=> [Dictionary.find(5),Dictionary.find(6)]
+student_city is a dynamic method which returns a list of dictionary object which dict_type is "student_city".Actually Dictionary will have as many dynamic methods as DictType.count and each dynamic method name is DictType.name(This methods returning an array,not ActiveRelation).
+   Dictionary.student_school = []
+   Dictionary.student_city :locale => :en = [["shanghai",1],["beijing",2]]
+You can use it in form select method like
    collection_select :student,:city,Dictionary.student_city,:id,:name_en
    select :student,:city,Dictionary.student_city(params)
-If params contains :locale => :fr,then it would return a list of french name of student city (from name_fr in Dictioanry)
-   Student.find(1).named_city = "beijing"
+If params contains :locale => :fr,it returns a list of french name of student city (from name_fr in Dictioanry)
+   Student.find(1).named_city = "beijing" # when default locale is :en
 Here is an other solution for international translation.
    Student.find(1).named_city(:zh) = "北京"
    Student.find(1).named_city(:fr) = "Pékin"
-Student has 2 belongs_to assocition which named as city_dict and school_dict,the naming convention is columname_dict.
-   Student.find(1).city_dict = Dictionary.find(6)
+Student has two belongs_to assocition which named as city_dict and school_dict,the naming convention is method_dict.
+   Student.find(1).city_dict #=> Dictionary.find(6)
 
 = Practical Suggestion
 If you start a new application and there are more than 10 kinds of static data,you may have a try with the gem.
@@ -111,4 +98,4 @@ In short,when you confused with the debug data,try running "rails tmp:clear" fir
 
 = TODO & Problems
 There are no convention and implemention to map Class like Ckeditor::Asset to a method.
-Add generators. Rewrite Testing,make it more maintainable.
+Rewrite Testing,make it more maintainable.
