@@ -1,6 +1,7 @@
 = Intro
-There are many static data in application.
-For example in a student application,there may be some static data like diploma kind,school and city of school.This gem can map these static data to a Dictionary#method like Dictionary#student_diploma_kind which return data list of diploma kind and generate a list of instance method on Student like @student.named_city which return city name of @student city
+There are always some static data(not static page) in application.For example product type or diploma kind of student.
+
+This gem can map these static data to a Dictionary#method like Dictionary#student_diploma_kind and generate a list of instance method on Student like @student.named_city which return city name (with locale if you need).
 
 = Usage
 == Installation
@@ -47,6 +48,7 @@ There is one conventions of DictType.name value.All value of DictType.name is "m
 
 === Table Definition
 Make sure you have two tables which named as dict_types and dictionaries.
+
 Table dictionaries has one convention of naming column : name_locale.So the name_fr means this column have a french value,you can see more usage later.
 The students table is not required and variable by your application.
 
@@ -65,11 +67,12 @@ Here is what should be like.Student model can be other models.
         acts_as_dict_slave
       end
 
-== Features : Methods and results (relies on the above data)
+== Features (relies on the above data) :
    DictType.all_cached #=> return cache of DictType.all
    DictType.all_types = %w[student_city student_school] # also cached
    Dictionary.student_city #=> [Dictionary.find(5),Dictionary.find(6)]
-student_city is a dynamic method which returns a list of dictionary object which dict_type is "student_city".Actually Dictionary will have as many dynamic methods as DictType.count and each dynamic method name is DictType.name(This methods returning an array,not ActiveRelation).
+student_city is a dynamic method which returns a list of dictionary object which dict_type is "student_city".
+Actually Dictionary will have as many dynamic methods as DictType.count and each dynamic method name is DictType.name(This methods returning an array,not ActiveRelation).
    Dictionary.student_school = []
    Dictionary.student_city :locale => :en = [["shanghai",1],["beijing",2]]
 You can use it in form select method like
