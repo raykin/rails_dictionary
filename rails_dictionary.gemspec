@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.name        = "rails_dictionary"
   s.version     = RailsDictionary::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.authors     = ["raykin"]
+  s.authors     = ["Raykin Lee"]
   s.email       = ["raykincoldxiao@campus.com"]
   s.homepage    = "https://github.com/raykin/rails_dictionary"
   s.summary     = %q{dictionary data for web application}
