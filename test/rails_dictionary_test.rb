@@ -18,7 +18,6 @@ def setup_db
   ActiveRecord::Schema.define(:version => 1) do
     create_table :dict_types do |t|
       t.string :name
-      t.string :comment
       t.timestamps
     end
     create_table :dictionaries do |t|
