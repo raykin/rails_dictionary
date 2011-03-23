@@ -44,7 +44,7 @@ These task are just generate table dictionaries,dict_types,students and some sam
          | 2  | shanghai@dict.com | 3    |        |
          +----+-------------------+------+--------+
          2 rows in set
-There is one conventions of DictType.name value.All value of DictType.name is <tt>"model_method"</tt> : student is model and city is method of student model.
+There is one conventions of DictType.name value.All value of DictType.name is "model_method" : student is model and city is method of student model.
 
 === Table Definition
 Make sure you have two tables which named as dict_types and dictionaries.
