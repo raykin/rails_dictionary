@@ -44,7 +44,7 @@ These task are just generate table dictionaries,dict_types,students and some sam
          | 2  | shanghai@dict.com | 3    |        |
          +----+-------------------+------+--------+
          2 rows in set
-There is one conventions of DictType.name value.All value of DictType.name is "model_method" : student is model and city is method of student model.
+There is one convention of DictType.name value.All value of DictType.name is "model_method" : student is model and city is method of student model.
 
 === Table Definition
 Make sure you have two tables which named as dict_types and dictionaries.
@@ -83,6 +83,8 @@ If params contains :locale => :fr,it returns a list of french name of student ci
 Here is an other solution for international translation.
    Student.find(1).named_city(:zh) = "北京"
    Student.find(1).named_city(:fr) = "Pékin"
+   Student.find(1).named_city(:en) = "beijing"
+Make sure your locale is en,not en-US.
 Student has two belongs_to assocition which named as city_dict and school_dict,the naming convention is method_dict.
    Student.find(1).city_dict #=> Dictionary.find(6)
 
