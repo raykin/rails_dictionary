@@ -23,9 +23,9 @@ module ActsAsDictType
         # short method to transfer id to name or name to id
         def self.revert(arg)
           if arg.is_a?(String)
-            DictType.where(name: arg).try(:first).id
+            DictType.where(name: arg).first.try(:id)
           elsif arg.is_a?(Fixnum)
-            DictType.where(id: arg).try(:first).name
+            DictType.where(id: arg).first.try(:name)
           end
         end
 

@@ -92,6 +92,7 @@ class DictTypeTest < Test::Unit::TestCase
   # test revert method in acts_as_dict_type
   def test_dt_revert
     assert_equal "student_school",DictType.revert(@dt_stu_school.id)
+    assert_equal nil,DictType.revert(100)
   end
 
   # test dynamic instance methods in slave model
