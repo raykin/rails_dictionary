@@ -1,4 +1,4 @@
 source "http://rubygems.org"
 
-# Specify your gem's dependencies in dictionary.gemspec
+# Specify your gem's dependencies in rails_dictionary.gemspec
 gemspec
