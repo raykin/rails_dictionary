@@ -103,4 +103,7 @@ In short,when you confused with the debug data,try running "rails tmp:clear" fir
 
 = TODO & Problems
 There are no convention and implemention to map Class like Ckeditor::Asset to a method.
+
+Rebuild core code.Using Rails engine.
+
 Rewrite Testing,make it more maintainable.
