@@ -33,7 +33,8 @@ module ActsAsDictionary
           if options.keys.include? :locale or options.keys.include? "locale"
             locale="name_#{ options[:locale] }"
             listed_attr.map! { |a| [a.send(locale),a.id] }
-            listed_attr.sort {|a,b| a.last <=> b.last } # maybe remove this line
+            listed_attr.sort { |a,b| a.first <=> b.first }
+            # maybe remove the above line,or change some sorting and caching design
           else
             listed_attr
           end

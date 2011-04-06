@@ -6,7 +6,7 @@ require "ruby-debug" # coupled with debugger to debug code
 Object.const_set "RAILS_CACHE", ActiveSupport::Cache.lookup_store
 require "active_support/cache"
 require "rails"
-# $: << "/home/raykin/studio/rails_dictionary/lib" # tmply added for local testing
+ $: << "/home/raykin/studio/rails_dictionary/lib" # tmply added for local testing
 require "#{File.dirname(__FILE__)}/../lib/rails_dictionary.rb"
 
 ActiveRecord::Base.establish_connection(:adapter => "sqlite3", :database => ":memory:")
@@ -112,18 +112,18 @@ class DictTypeTest < Test::Unit::TestCase
   end
 
   def test_dictionary_method_missing
-    assert_equal [["shanghai",1],["beijing",2]],Dictionary.student_city(:locale => :en)
+    assert_equal [["beijing",2],["shanghai",1]],Dictionary.student_city(:locale => :en)
   end
 
   def test_dictionary_method_missing_with_locale
-    assert_equal [["上海", 1], ["北京", 2]],Dictionary.student_city(:locale => :zh)
+    assert_equal [["上海", 1],["北京", 2]],Dictionary.student_city(:locale => :zh)
   end
 
   def test_delete_dicts_cache
     @dy_wuhan=Dictionary.create! name_en: "wuhan",name_zh: "武汉",name_fr: "wuhan",dict_type_id: @dt_stu_city.id
-    assert_equal [["shanghai", 1], ["beijing", 2], ["wuhan", 3]],Dictionary.student_city(:locale => :en)
+    assert_equal [["beijing", 2],["shanghai",1],["wuhan", 3]],Dictionary.student_city(:locale => :en)
     @dy_wuhan.destroy
-    assert_equal [["shanghai", 1], ["beijing", 2]],Dictionary.student_city(:locale => :en)
+    assert_equal [["beijing", 2],["shanghai",1]],Dictionary.student_city(:locale => :en)
     assert_equal [@dy_shanghai,@dy_beijing],Dictionary.student_city
   end
 
