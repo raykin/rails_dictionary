@@ -102,7 +102,7 @@ The rails cache would not refresh.
 In short,when you confused with the debug data,try running "rails tmp:clear" first.
 
 = TODO & Problems
-There are no convention and implemention to map Class like Ckeditor::Asset to a method.
+There are no convention and implemention to map Class like Ckeditor::Asset to a legal method name.
 
 Rebuild core code.Using Rails engine.
 
