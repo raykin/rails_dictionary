@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# Testing for version 0.0.8 or lower.Copy the test design from acts_as_tree
+#   running "ruby -I . test/rails_dictionary_test.rb " in root dir
+#
 require "test/unit"
 require "active_support"
 require "active_record"
@@ -6,7 +9,6 @@ require "ruby-debug" # coupled with debugger to debug code
 Object.const_set "RAILS_CACHE", ActiveSupport::Cache.lookup_store
 require "active_support/cache"
 require "rails"
-# $: << "/home/raykin/studio/rails_dictionary/lib" # tmply added for local testing
 require "#{File.dirname(__FILE__)}/../lib/rails_dictionary.rb"
 
 ActiveRecord::Base.establish_connection(:adapter => "sqlite3", :database => ":memory:")
@@ -52,7 +54,6 @@ end
 
 class Student < ActiveRecord::Base
 end
-
 
 class CoreExtTest < Test::Unit::TestCase
   def test_array
