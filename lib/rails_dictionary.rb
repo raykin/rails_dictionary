@@ -1,4 +1,2 @@
-require "rails_dictionary/acts_as_dictionary"
-require "rails_dictionary/acts_as_dict_slave"
-require "rails_dictionary/acts_as_dict_type"
-require "rails_dictionary/array_core_ext"
+require File.join(File.dirname(__FILE__), 'rails_dictionary/railtie')
+require File.join(File.dirname(__FILE__), 'rails_dictionary/engine')

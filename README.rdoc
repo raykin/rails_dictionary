@@ -72,9 +72,10 @@ Here is what should be like.Student model can be other models.
    DictType.all_types = %w[student_city student_school] # also cached
    Dictionary.student_city #=> [Dictionary.find(5),Dictionary.find(6)]
 student_city is a dynamic method which returns a list of dictionary object which dict_type is "student_city".
-Actually Dictionary will have as many dynamic methods as DictType.count and each dynamic method name is DictType.name(This methods returning an array,not ActiveRelation).
+Actually Dictionary will have as many dynamic methods as DictType.count and each dynamic method name is DictType.name.
+Before version 0.1.0 or 0.2.0 ,all dynamic methods return an array,not ActiveRelation.So
    Dictionary.student_school = []
-   Dictionary.student_city :locale => :en = [["shanghai",1],["beijing",2]]
+   Dictionary.student_city :locale => :en  #=> [["shanghai",1],["beijing",2]]
 You can use it in form select method like
    collection_select :student,:city,Dictionary.student_city,:id,:name_en
    select :student,:city,Dictionary.student_city(params)
@@ -85,6 +86,7 @@ Here is an other solution for international translation.
    Student.find(1).named_city(:fr) = "Pékin"
    Student.find(1).named_city(:en) = "beijing"
 Make sure your locale is en,not en-US.
+
 Student has two belongs_to assocition which named as city_dict and school_dict,the naming convention is method_dict.
    Student.find(1).city_dict #=> Dictionary.find(6)
 
