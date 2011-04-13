@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # Testing for version 0.0.8 or lower.Copy the test design from acts_as_tree
-#   running "ruby -I . test/rails_dictionary_test.rb " in root dir
+# Usage: run "ruby -I . test/rails_dictionary_test.rb " in root dir
 #
 require "test/unit"
 require "active_support"
