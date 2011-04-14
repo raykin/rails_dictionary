@@ -1,6 +1,3 @@
-require 'active_record'
-require 'action_controller/railtie'
-require 'action_view/railtie'
 
 # database
 ActiveRecord::Base.configurations = {'test' => {:adapter => 'sqlite3', :database => ':memory:'}}

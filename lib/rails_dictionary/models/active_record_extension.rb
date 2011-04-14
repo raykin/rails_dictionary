@@ -5,7 +5,8 @@ module RailsDictionary
     end
 
     module ClassMethods
-      #TODO: move macro define in each module file
+      # TODO: move macro define in each module file
+      # See Usage in readme.doc.
       def acts_as_dict_type
         self.class_eval do
           has_many :dictionaries
