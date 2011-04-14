@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 require File.expand_path('spec_helper', File.dirname(__FILE__))
 
-
 describe RailsDictionary::ActiveRecordExtension do
   %w[acts_as_dict_type acts_as_dictionary acts_as_dict_slave].each do |method_name|
     it "contains #{method_name}" do
