@@ -10,7 +10,7 @@ Rail3
 or
         gem "rails_dictionary",:git => 'git://github.com/raykin/rails_dictionary'
 
-!!For user who update rails_dictionary from old version to 0.0.9,Please run following command on app root
+!!For user who update from old version to 0.0.9,Please run following command on app root
         rails runner "DictType.new.delete_all_caches"
 See change log for brief info.
 
@@ -35,8 +35,8 @@ These task are just generate table dictionaries,dict_types,students and some sam
          +----+----------+---------+----------+--------------+
          | id | name_en  | name_zh | name_fr  | dict_type_id |
          +----+----------+---------+----------+--------------+
-         | 1  | shanghai | 上海      | shanghai | 1            |
-         | 2  | beijing  | 北京      | Pékin    | 1            |
+         | 1  | shanghai | 上海     | shanghai | 1            |
+         | 2  | beijing  | 北京     | Pékin    | 1            |
          +----+----------+---------+----------+--------------+
          2 rows in set
        irb(main):016:0> Student.select("id,email,city,school").all
