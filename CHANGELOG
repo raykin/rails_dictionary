@@ -1,3 +1,5 @@
+0.0.9.1
+  fix a cache bug in 0.0.9
 0.0.9
   add Rails Engine to redesign the gem
   use Rspec instead of Test::Unit to write test code
