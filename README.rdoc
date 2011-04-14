@@ -112,4 +112,4 @@ There are no convention and implemention to map Class like Ckeditor::Asset to a 
 
 Rebuild core code.Using Rails engine.
 
-Rewrite Testing,make it more maintainable.
+Add test code for cache DictType.tab_and_column,then uncomment the cache code.
