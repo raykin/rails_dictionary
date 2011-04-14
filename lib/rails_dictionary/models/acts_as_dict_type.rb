@@ -36,6 +36,7 @@ module RailsDictionary
       # TODO:
       #   To cache this method output need more skills on how to caculate ActiveRecord::Base.descendants
       #   Temply remove the cache
+      #   And add test for this situation
       def tab_and_column
         #Rails.cache.fetch("DictType.tab_and_column") do
           all_model_class=ActiveRecord::Base.descendants.map(&:name).map(&:underscore)
