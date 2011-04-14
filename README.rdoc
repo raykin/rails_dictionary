@@ -10,7 +10,7 @@ Rail3
 or
         gem "rails_dictionary",:git => 'git://github.com/raykin/rails_dictionary'
 
-!!For user who update from old version to 0.0.9,Please run following command on app root
+!!For user who update from old version to 0.0.9 or higher,Please run following command on app root
         rails runner "DictType.new.delete_all_caches"
 See change log for brief info.
 
