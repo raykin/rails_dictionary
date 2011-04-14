@@ -108,6 +108,4 @@ There are no convention and implemention to map Class like Ckeditor::Asset to a 
 
 Rebuild core code.Using Rails engine.
 
-Make cached type of DictType to an array of symbols
-
 Rewrite Testing,make it more maintainable.
