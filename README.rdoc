@@ -6,9 +6,13 @@ This gem can map these static data to a Dictionary#method like Dictionary#studen
 = Usage
 == Installation
 Rail3
-        gem 'rails_dictionary','0.0.8' # there maybe an error in version 0.0.9
+        gem 'rails_dictionary'
 or
         gem "rails_dictionary",:git => 'git://github.com/raykin/rails_dictionary'
+
+!!For user who update rails_dictionary from old version to 0.0.9,Please run following command on app root
+        rails runner "DictType.new.delete_all_caches"
+See change log for brief info.
 
 == Sample
 Run following task will give you a simple start.Maybe you should try it in a new application first.

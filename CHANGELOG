@@ -2,5 +2,6 @@
   add Rails Engine to redesign the gem
   use Rspec instead of Test::Unit to write test code
   remove many nonsence code
+  if update from lower version,should run "rails runner "DictType.new.delete_all_caches" on app root.
 0.0.1-0.0.8
   old mixin coding style
