@@ -29,7 +29,7 @@ module RailsDictionary
 
       # add a belongs_to(Dictionary) association and a named_{column} method
       def add_dynamic_column_method
-        dict_mapping_columns.each { |e| belongs_to "#{e.to_s}_dict".to_sym,class_name: "Dictionary",foreign_key: e }
+        dict_mapping_columns.each { |e| belongs_to "#{e.to_s}_dict".to_sym,class_name: "Dictionary",foreign_key: e.to_sym }
         dict_mapping_columns.each { |ele| named_dict_value ele.to_sym }
       end
 

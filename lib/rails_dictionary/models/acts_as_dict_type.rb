@@ -33,11 +33,14 @@ module RailsDictionary
       #   I don't know which is better,but descendants contains subclass of subclass,it contains more.
       #   Class like +Ckeditor::Asset+ transfer to "ckeditor/asset",but we can not naming method like that,
       #   So it still not support, the solution may be simple,just make another convention to escape "/"
+      # TODO:
+      #   To cache this method output need more skills on how to caculate ActiveRecord::Base.descendants
+      #   Temply remove the cache
       def tab_and_column
-        Rails.cache.fetch("DictType.tab_and_column") do
+        #Rails.cache.fetch("DictType.tab_and_column") do
           all_model_class=ActiveRecord::Base.descendants.map(&:name).map(&:underscore)
           all_types.map(&:to_s).extract_to_hash(all_model_class)
-        end
+        #end
       end
     end
 
@@ -45,7 +48,7 @@ module RailsDictionary
       def delete_all_caches
         Rails.cache.delete("DictType.all_types")
         Rails.cache.delete("DictType.cached_all")
-        Rails.cache.delete("DictType.tab_and_column")
+        #Rails.cache.delete("DictType.tab_and_column")
         return true
       end
     end
