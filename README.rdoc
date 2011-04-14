@@ -12,6 +12,8 @@ or
 
 !!For user who update from old version to 0.0.9.1 or higher,Please run following command on app root after updates.
         rails runner "DictType.new.delete_all_caches"
+and in production
+        rails runner "DictType.new.delete_all_caches" -e production
 See change log for brief info.
 
 == Sample
