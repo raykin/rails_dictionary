@@ -75,7 +75,7 @@ Here is what should be like.Student model can be other models.
 
 == Features (relies on the above data) :
    DictType.all_cached #=> return cache of DictType.all
-   DictType.all_types = %w[student_city student_school] # also cached
+   DictType.all_types = [:student_city,:student_school] # also cached
    Dictionary.student_city #=> [Dictionary.find(5),Dictionary.find(6)]
 student_city is a dynamic method which returns a list of dictionary object which dict_type is "student_city".
 Actually Dictionary will have as many dynamic methods as DictType.count and each dynamic method name is DictType.name.
