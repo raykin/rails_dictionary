@@ -25,7 +25,10 @@ module RailsDictionary
       #   rethink about the cache.
       #   cache methods like Dictionary.student_city(:locale => :zh,:sort => :name_fr)
       #   but not cache Dictionary.student_city,return it as relation
-      def method_missing(method_id,options={},&block)
+      #
+      #   Remove nil noise,if listed_attr =[[nil, 201], [nil, 203], [nil, 202], ["Sciences", 200]]
+      #   the sort would be failed of ArgumentError: comparison of Array with Array failed
+      def method_missing(method_id,options={})
         method_name=method_id.to_s.downcase
         if DictType.all_types.include? method_id
           Rails.cache.fetch("Dictionary.#{method_name}") { dict_type_name_eq(method_name) }
@@ -33,7 +36,7 @@ module RailsDictionary
           # Instance of activerelation can not be dup?
           if options.keys.include? :locale or options.keys.include? "locale"
             locale="name_#{ options[:locale] }"
-            listed_attr.map! { |a| [a.send(locale),a.id] }
+            listed_attr.map! { |a| [a.send(locale),a.id] }.reject! {|ele| ele.first.nil?}
             listed_attr.sort { |a,b| a.first <=> b.first }
             # maybe remove the above line,or change some sorting and caching design
           else
