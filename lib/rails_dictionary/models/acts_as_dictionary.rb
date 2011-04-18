@@ -28,6 +28,7 @@ module RailsDictionary
       #
       #   Remove nil noise,if listed_attr =[[nil, 201], [nil, 203], [nil, 202], ["Sciences", 200]]
       #   the sort would be failed of ArgumentError: comparison of Array with Array failed
+      #   split this method ,make it more short and maintainance
       def method_missing(method_id,options={})
         method_name=method_id.to_s.downcase
         if DictType.all_types.include? method_id
@@ -37,7 +38,7 @@ module RailsDictionary
           if options.keys.include? :locale or options.keys.include? "locale"
             locale="name_#{ options[:locale] }"
             listed_attr.map! { |a| [a.send(locale),a.id] }.reject! {|ele| ele.first.nil?}
-            listed_attr.sort { |a,b| a.first <=> b.first }
+            listed_attr.sort { |a,b| a.first.downcase <=> b.first.downcase }
             # maybe remove the above line,or change some sorting and caching design
           else
             listed_attr
