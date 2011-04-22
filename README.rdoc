@@ -14,6 +14,8 @@ or
         rails runner "DictType.new.delete_all_caches"
 and in production
         rails runner "DictType.new.delete_all_caches" -e production
+or if you use file cache,just run
+        rake tmp:clear
 See change log for brief info.
 
 == Sample
