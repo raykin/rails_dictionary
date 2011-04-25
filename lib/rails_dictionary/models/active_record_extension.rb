@@ -8,21 +8,21 @@ module RailsDictionary
       # TODO: move macro define in each module file
       # See Usage in readme.doc.
       def acts_as_dict_type
-        self.class_eval do
-          has_many :dictionaries
-          validates_uniqueness_of :name
-          after_save :delete_all_caches
-          after_destroy :delete_all_caches
-        end
+
+        has_many :dictionaries
+        validates_uniqueness_of :name
+        after_save :delete_all_caches
+        after_destroy :delete_all_caches
+
         include RailsDictionary::ActsAsDictType
       end
 
       def acts_as_dictionary
-        self.class_eval do
-          belongs_to :dict_type
-          after_save :delete_dicts_cache
-          after_destroy :delete_dicts_cache
-        end
+
+        belongs_to :dict_type
+        after_save :delete_dicts_cache
+        after_destroy :delete_dicts_cache
+
         include RailsDictionary::ActsAsDictionary
       end
 
