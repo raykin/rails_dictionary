@@ -37,16 +37,31 @@ module RailsDictionary
           # Instance of activerelation can not be dup?
           if options.keys.include? :locale or options.keys.include? "locale"
             locale="name_#{ options[:locale] }"
+            sort_block=sort_dicts(options)
+            listed_attr.sort!(&sort_block) if sort_block
             listed_attr.map! { |a| [a.send(locale),a.id] }.reject! {|ele| ele.first.nil?}
-            listed_attr.sort { |a,b| a.first.downcase <=> b.first.downcase }
-            # maybe remove the above line,or change some sorting and caching design
-          else
-            listed_attr
           end
+          listed_attr
         else
           super
         end
       end
+
+      # overide this method to get customed sort block
+      def sort_dicts(options)
+        if options.keys.include? :locale or options.keys.include? "locale"
+          locale="name_#{ options[:locale] }"
+          if options[:locale].to_sym == :zh
+            conv = Iconv.new("GBK", "utf-8")
+            Proc.new { |a,b| conv.iconv(a.send(locale)) <=> conv.iconv(b.send(locale)) }
+          else
+            Proc.new { |a,b| a.send(locale).downcase <=> b.send(locale).downcase }
+          end
+        else
+          false
+        end
+      end
+
     end
 
     module InstanceMethods

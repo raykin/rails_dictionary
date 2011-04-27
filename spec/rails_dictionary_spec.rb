@@ -45,7 +45,7 @@ describe RailsDictionary do
     end
 
     it "generate student_city method with locale" do
-      Dictionary.student_city(:locale => :zh).should == [["上海", 1],["北京", 2]]
+      Dictionary.student_city(:locale => :zh).should == [["北京", 2],["上海",1]]
     end
 
     it "after record added or removed" do

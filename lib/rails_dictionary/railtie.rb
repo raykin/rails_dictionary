@@ -1,4 +1,5 @@
 require 'rails'
+require 'iconv'
 
 require File.join(File.dirname(__FILE__),"array_core_ext")
 require File.join(File.dirname(__FILE__),"models/acts_as_dict_type")

@@ -83,7 +83,7 @@ student_city is a dynamic method which returns a list of dictionary object which
 Actually Dictionary will have as many dynamic methods as DictType.count and each dynamic method name is DictType.name.
 Before version 0.1.0 or 0.2.0 ,all dynamic methods return an array,not ActiveRelation.So
    Dictionary.student_school = []
-   Dictionary.student_city :locale => :en  #=> [["shanghai",1],["beijing",2]]
+   Dictionary.student_city :locale => :en  #=> [["beijing", 2],["shanghai",1]]
 You can use it in form select method like
    collection_select :student,:city,Dictionary.student_city,:id,:name_en
    select :student,:city,Dictionary.student_city(params)
@@ -97,6 +97,13 @@ Make sure your locale is en,not en-US.
 
 Student has two belongs_to assocition which named as city_dict and school_dict,the naming convention is method_dict.
    Student.find(1).city_dict #=> Dictionary.find(6)
+
+=== Sort Feature
+Static data need order frequently,so Dictionary.student_city :locale => :en has a default sort rules.
+By default,if the options contains locale,the results are sorted by the name value.
+If locale is :zh,sort rule is order by GBK encoding.
+Other locales are just order by alphabetical without case sensitive.
+You can override Dictionary.sort_dicts to customize your sort rule.But it is not recommended now as the code of sort design maybe change in a few month.
 
 = Practical Suggestion
 If you start a new application and there are more than 10 kinds of static data,you may have a try with the gem.
@@ -112,8 +119,9 @@ The rails cache would not refresh.
 In short,when you confused with the debug data,try running "rails tmp:clear" first.
 
 = TODO & Problems
-There are no convention and implemention to map Class like Ckeditor::Asset to a legal method name.
+Add a flexible solution to order function.Static data always need orders.
 
-Rebuild core code.Using Rails engine.
-
+Is there any exist low level method to monitor the change of descendents
 Add test code for cache DictType.tab_and_column,then uncomment the cache code.
+
+There are no convention and implemention to map Class like Ckeditor::Asset to a legal method name.
