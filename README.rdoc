@@ -99,7 +99,7 @@ Student has two belongs_to assocition which named as city_dict and school_dict,t
    Student.find(1).city_dict #=> Dictionary.find(6)
 
 === Sort Feature
-Static data need order frequently,so Dictionary.student_city :locale => :en has a default sort rules.
+Static data need orders frequently,so Dictionary.student_city :locale => :en has a default sort rules.
 By default,if the options contains locale,the results are sorted by the name value.
 If locale is :zh,sort rule is order by GBK encoding.
 Other locales are just order by alphabetical without case sensitive.
@@ -119,8 +119,6 @@ The rails cache would not refresh.
 In short,when you confused with the debug data,try running "rails tmp:clear" first.
 
 = TODO & Problems
-Add a flexible solution to order function.Static data always need orders.
-
 Is there any exist low level method to monitor the change of descendents
 Add test code for cache DictType.tab_and_column,then uncomment the cache code.
 
