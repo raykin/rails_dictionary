@@ -1,5 +1,5 @@
 = Intro
-There are always some static data(not static page) in application.For example product type or diploma kind of student.
+There are always some static data(not static page) in application.For example product type or student diploma type.
 
 This gem can map these static data to a Dictionary#method like Dictionary#student_diploma_kind and generate a list of instance method on Student like @student.named_city which return city name (with locale if you need).
 
