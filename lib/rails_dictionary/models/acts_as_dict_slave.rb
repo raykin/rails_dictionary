@@ -8,7 +8,13 @@ module RailsDictionary
 
       # return columns that exist in DictType#tab_and_column
       def columns_in_dict_type
-        DictType.tab_and_column[self.name.underscore.to_sym]
+        if ActiveRecord::VERSION::STRING < '3.1'
+          DictType.tab_and_column[self.name.underscore.to_sym]
+        elsif DictType.table_exists?
+          DictType.tab_and_column[self.name.underscore.to_sym]
+        else
+          []
+        end
       end
 
       # columns which map to dictionary
