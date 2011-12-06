@@ -8,9 +8,9 @@ This gem can map these static data to a Dictionary#method like Dictionary#studen
 Rail3
         gem 'rails_dictionary'
 or
-        gem "rails_dictionary",:git => 'git://github.com/raykin/rails_dictionary'
+        gem "rails_dictionary", :git => 'git://github.com/raykin/rails_dictionary'
 
-!!For user who update from old version to 0.0.9.1 or higher,Please run following command on app root after updates.
+!!For users who update from old version to 0.0.9.1 or higher,Please run following command on app root after updates.
         rails runner "DictType.new.delete_all_caches"
 and in production
         rails runner "DictType.new.delete_all_caches" -e production

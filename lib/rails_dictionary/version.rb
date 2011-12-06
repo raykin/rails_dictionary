@@ -1,3 +1,3 @@
 module RailsDictionary
-  VERSION = "0.0.9.4"
+  VERSION = "0.1.0"
 end
