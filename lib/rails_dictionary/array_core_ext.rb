@@ -1,5 +1,5 @@
 class Array
-  # returning a hash,not array
+  # Return a hash by compare two arrays
   def extract_to_hash(keys_array)
     ret_hash={}
     keys_array.each {|ky| ret_hash[ky.to_sym]=[]}

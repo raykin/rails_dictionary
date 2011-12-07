@@ -24,7 +24,7 @@ module RailsDictionary
       # Programmer DOC && TODO:
       #   rethink about the cache.
       #   cache methods like Dictionary.student_city(:locale => :zh,:sort => :name_fr)
-      #   but not cache Dictionary.student_city,return it as relation
+      #   but not cache Dictionary.student_city, return it as relation
       #
       #   Remove nil noise,if listed_attr =[[nil, 201], [nil, 203], [nil, 202], ["Sciences", 200]]
       #   the sort would be failed of ArgumentError: comparison of Array with Array failed
@@ -47,7 +47,7 @@ module RailsDictionary
         end
       end
 
-      # overide this method to get customed sort block
+      # Override this method to get customed sort block
       def sort_dicts(options)
         if options.keys.include? :locale or options.keys.include? "locale"
           locale="name_#{ options[:locale] }"
@@ -62,7 +62,7 @@ module RailsDictionary
         end
       end
 
-    end
+    end # End ClassMethods
 
     module InstanceMethods
       def delete_dicts_cache
@@ -70,6 +70,7 @@ module RailsDictionary
         Rails.cache.delete("Dictionary.#{method_name}")
         return true
       end
-    end
+    end # End InstanceMethods
+
   end
 end

@@ -19,9 +19,9 @@ module RailsDictionary
 
       # columns which map to dictionary
       def dict_columns(ops={})
-        conf={except: nil,add: nil}
+        conf = { except: nil, add: nil}
         conf.update(ops)
-        cidt=self.columns_in_dict_type || []
+        cidt = columns_in_dict_type || []
         cidt.delete(conf[:except])
         case conf[:add]
         when String
