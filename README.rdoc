@@ -122,6 +122,7 @@ In short,when you confused with the debug data,try running "rails tmp:clear" fir
 
 = TODO & Problems
 Remove engine. Becase for the view layer we can use gem rails_admin. so this gem did not need rails engine.
+Make Dictionary.student_city return a scope.
 Is there any exist low level method to monitor the change of descendents?
 Add test code for cache DictType.tab_and_column,then uncomment the cache code.
 Remove gems/rails_dictionary-0.0.9.4/app/views from rails view path

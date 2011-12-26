@@ -17,6 +17,9 @@ module RailsDictionary
         joins(:dict_type).where("dict_types.name" => method_name).all
       end
 
+      # For rails3
+      # I thought it would be better to define a method in method_missing, Not just generate cache.
+      #   Cause cache can not store ActiveRecord
       # Generate methods like Dictionary.student_city
       #   Dictionary.student_city - a list of dictionary object which dict type is student_city
       #   Dictionary.student_city(:locale => :zh) - a select format array which can be used
