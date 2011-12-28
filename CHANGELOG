@@ -1,3 +1,6 @@
+0.1.1
+  Add method scoped_student_city(dynamic build) to return AR scope of student city Dictionary.
+
 0.0.9.1
   fix a cache bug in 0.0.9
 0.0.9
