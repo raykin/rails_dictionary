@@ -83,7 +83,7 @@ Here is what should be like.Student model can be other models.
    Dictionary.student_city #=> [Dictionary.find(5),Dictionary.find(6)]
 student_city is a dynamic method(from method missing) which returns a list of dictionary object which dict_type is "student_city".
 Actually Dictionary will have as many dynamic methods as DictType.count and each dynamic method name is DictType.name.
-And method student_city return an array,not ActiveRelation.So
+And student_city return an array,not ActiveRelation.So
    Dictionary.student_school = []
    Dictionary.student_city :locale => :en  #=> [["beijing", 2],["shanghai",1]]
 If you need a ActiveRelation, try scoped_student_city like
