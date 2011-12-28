@@ -41,12 +41,16 @@ describe RailsDictionary do
 
   describe Dictionary do
     it "generate student_city method" do
-      # Dictionary.student_city.class.name.should == "ActiveRecord::Relation"
       Dictionary.student_city.should == [dy_shanghai,dy_beijing]
     end
 
     it "generate student_city method with locale" do
       Dictionary.student_city(:locale => :zh).should == [["北京", 2],["上海",1]]
+    end
+
+    it "build scope method scoped_student_city" do
+      Dictionary.scoped_student_city.class.name.should == "ActiveRecord::Relation"
+      Dictionary.scoped_student_city.where(:id => 1).should == [dy_shanghai]
     end
 
     it "after record added or removed" do
@@ -55,6 +59,7 @@ describe RailsDictionary do
       @dy_wuhan.destroy
       Dictionary.student_city(:locale => :en).should == [["beijing", 2],["shanghai",1]]
     end
+
   end
 
   describe Student do

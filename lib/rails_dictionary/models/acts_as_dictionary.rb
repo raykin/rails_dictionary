@@ -7,16 +7,6 @@ module RailsDictionary
 
     module ClassMethods
 
-      # Return an instance of array
-      # Programmer DOC:
-      #   Following design is failed with sqlite3 in test
-      #   scope :dict_type_name_eq,lambda {|method_name| joins(:dict_type).where("dict_types.name" => method_name)}
-      #   remove the all seems not pass test,return following errors
-      #   TypeError: no marshal_dump is defined for class SQLite3::Database
-      def dict_type_name_eq(method_name)
-        joins(:dict_type).where("dict_types.name" => method_name).all
-      end
-
       # For rails3
       # I thought it would be better to define a method in method_missing, Not just generate cache.
       #   Cause cache can not store ActiveRecord
@@ -33,11 +23,11 @@ module RailsDictionary
       #   the sort would be failed of ArgumentError: comparison of Array with Array failed
       #   split this method ,make it more short and maintainance
       def method_missing(method_id,options={})
-        method_name=method_id.to_s.downcase
         if DictType.all_types.include? method_id
-          Rails.cache.fetch("Dictionary.#{method_name}") { dict_type_name_eq(method_name) }
-          listed_attr=Rails.cache.read("Dictionary.#{method_name}").dup
-          # Instance of ActiveRecord::Relation can not be dup?
+          method_name=method_id.to_s.downcase
+          Rails.cache.fetch("Dictionary.#{method_name}") { dict_type_name_eq(method_name).all }
+          listed_attr=Rails.cache.read("Dictionary.#{method_name}").dup  # Instance of ActiveRecord::Relation can not be dup?
+          build_scope_method(method_id)
           if options.keys.include? :locale or options.keys.include? "locale"
             locale="name_#{ options[:locale] }"
             sort_block=sort_dicts(options)
@@ -62,6 +52,17 @@ module RailsDictionary
           end
         else
           false
+        end
+      end
+
+      private
+
+      def build_scope_method(name)
+        scope_method_name = "scoped_#{name}".to_sym
+        unless respond_to? scope_method_name
+          define_singleton_method scope_method_name do
+            dict_type_name_eq(name).scoped
+          end
         end
       end
 

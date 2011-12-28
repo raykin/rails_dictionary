@@ -22,6 +22,7 @@ module RailsDictionary
         belongs_to :dict_type
         after_save :delete_dicts_cache
         after_destroy :delete_dicts_cache
+        scope :dict_type_name_eq, lambda { |name| joins(:dict_type).where("dict_types.name" => name) }
 
         include RailsDictionary::ActsAsDictionary
       end
