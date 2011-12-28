@@ -37,7 +37,7 @@ module RailsDictionary
         if DictType.all_types.include? method_id
           Rails.cache.fetch("Dictionary.#{method_name}") { dict_type_name_eq(method_name) }
           listed_attr=Rails.cache.read("Dictionary.#{method_name}").dup
-          # Instance of activerelation can not be dup?
+          # Instance of ActiveRecord::Relation can not be dup?
           if options.keys.include? :locale or options.keys.include? "locale"
             locale="name_#{ options[:locale] }"
             sort_block=sort_dicts(options)

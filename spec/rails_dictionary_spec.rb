@@ -41,6 +41,7 @@ describe RailsDictionary do
 
   describe Dictionary do
     it "generate student_city method" do
+      # Dictionary.student_city.class.name.should == "ActiveRecord::Relation"
       Dictionary.student_city.should == [dy_shanghai,dy_beijing]
     end
 
