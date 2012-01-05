@@ -1,3 +1,6 @@
+0.1.2
+  Remove Engine cause it's never used.
+
 0.1.1
   Add method scoped_student_city(dynamic build) to return AR scope of student city Dictionary.
 
