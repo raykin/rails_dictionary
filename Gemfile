@@ -4,7 +4,8 @@ source "http://rubygems.org"
 gemspec
 
 group :development,:test do
-  gem 'rspec', '>= 2.5.0'
   gem 'rails', '>= 3.0.0'
+  gem 'rspec', '>= 2.5.0'
+  gem "rspec-rails"
   gem 'sqlite3'
 end

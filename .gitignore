@@ -1,3 +1,4 @@
 pkg/
 .git/
 .gitignore
+Gemfile.lock
