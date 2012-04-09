@@ -2,3 +2,4 @@ pkg/
 .git/
 .gitignore
 Gemfile.lock
+tmp/*
