@@ -3,3 +3,4 @@ pkg/
 .gitignore
 Gemfile.lock
 tmp/*
+.idea/
