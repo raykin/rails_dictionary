@@ -55,6 +55,10 @@ module RailsDictionary
         end
       end
 
+      def respond_to?(name, include_private=false)
+        DictType.all_types.include?(name) || super
+      end
+
       private
 
       def build_scope_method(name)

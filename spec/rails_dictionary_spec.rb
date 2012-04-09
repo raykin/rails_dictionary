@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+require 'debugger'
 require File.expand_path('spec_helper', File.dirname(__FILE__))
 
 describe RailsDictionary::ActiveRecordExtension do
@@ -40,6 +41,10 @@ describe RailsDictionary do
   end
 
   describe Dictionary do
+    it "should respond to student_city" do
+      Dictionary.should respond_to(:student_city)
+    end
+
     it "generate student_city method" do
       Dictionary.student_city.should == [dy_shanghai,dy_beijing]
     end
