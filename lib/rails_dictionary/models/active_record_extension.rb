@@ -42,6 +42,7 @@ module RailsDictionary
         end
       end
 
+      alias_method :acts_as_dict_consumer, :acts_as_dict_slave
     end
   end
 end
