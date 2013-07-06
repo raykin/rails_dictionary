@@ -45,8 +45,7 @@ module RailsDictionary
         if options.keys.include? :locale or options.keys.include? "locale"
           locale="name_#{ options[:locale] }"
           if options[:locale].to_sym == :zh
-            conv = Iconv.new("GBK", "utf-8")
-            Proc.new { |a,b| conv.iconv(a.send(locale)) <=> conv.iconv(b.send(locale)) }
+            Proc.new { |a,b| a.send(locale).encode('GBK') <=> b.send(locale).encode('GBK') }
           else
             Proc.new { |a,b| a.send(locale).downcase <=> b.send(locale).downcase }
           end
