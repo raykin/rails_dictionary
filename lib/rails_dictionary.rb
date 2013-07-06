@@ -7,6 +7,6 @@ require File.join(File.dirname(__FILE__), "rails_dictionary/models/acts_as_dicti
 require File.join(File.dirname(__FILE__), "rails_dictionary/models/acts_as_dict_slave")
 
 # rake tasks not autoload in Rails4
-Dir["tasks/**/*.rake"].each { |ext| load ext } if defined?(Rake)
+File.expand_path('../tasks/**/*.rake"',__FILE__).each { |ext| load ext } if defined?(Rake)
 
 ::ActiveRecord::Base.send :include, RailsDictionary::ActiveRecordExtension
