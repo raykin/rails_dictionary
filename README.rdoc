@@ -5,9 +5,9 @@ This gem can map these static data to a Dictionary#method like Dictionary#studen
 
 = Usage
 == Installation
-Version 1.0 support Rails3.1
+Version 0.2 support Rails4
+Version 0.1 support Rails3.1
 
-Rail3
         gem 'rails_dictionary'
 or
         gem "rails_dictionary", :git => 'git://github.com/raykin/rails_dictionary'
