@@ -84,6 +84,24 @@ describe RailsDictionary do
       stu_beijing.named_city(:fr).should == "Pékin"
     end
 
+    it "update city by set city_name to a value" do
+      stu_shanghai.update_attributes city_name: "wuhan"
+      stu_shanghai.reload.city_name.should == "wuhan"
+    end
+
+    it "update city by set city_name to an exist dictionary name" do
+      Dictionary.where(name_en: "beijing").count.should eq(1)
+      stu_shanghai.update_attributes city_name: "beijing"
+      stu_shanghai.reload.city_name.should eq('beijing')
+      Dictionary.where(name_en: "beijing").count.should eq(1)
+    end
+
+    it "create a student with shanghai city" do
+      s = Student.create(city_name: "shanghai")
+      s.reload
+      s.city_name.should == "shanghai"
+    end
+
     it "override default locale" do
       Student.acts_as_dict_slave :locale => :fr
       stu_beijing.named_city.should == "Pékin"

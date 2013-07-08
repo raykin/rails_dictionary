@@ -16,6 +16,7 @@ module RailsDictionary
       end
 
       # short method to transfer id to name or name to id
+      # TODO: cache it
       def revert(arg)
         if arg.is_a?(String)
           DictType.where(name: arg).first.try(:id)
