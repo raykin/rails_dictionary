@@ -6,6 +6,7 @@ This gem can map these static data to a Dictionary#method like Dictionary#studen
 = Usage
 == Installation
 Version 0.2 support Rails4
+
 Version 0.1 support Rails3.1
 
         gem 'rails_dictionary'
