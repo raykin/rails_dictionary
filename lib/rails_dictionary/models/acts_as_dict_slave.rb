@@ -71,7 +71,8 @@ module RailsDictionary
         define_method(method_name) do |value, options={}|
           options.merge!(name_en: value)
           dict_type_id = DictType.revert("#{self.class.table_name.singularize}_#{colname}")
-          exist_dictionary = Dictionary.where(options).where(dict_type_id: dict_type_id)
+          options.merge!(dict_type_id: dict_type_id)
+          exist_dictionary = Dictionary.where(options)
           if exist_dictionary.present?
             exist_id = exist_dictionary.first.id
           else

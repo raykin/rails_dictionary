@@ -87,6 +87,7 @@ describe RailsDictionary do
     it "update city by set city_name to a value" do
       stu_shanghai.update_attributes city_name: "wuhan"
       stu_shanghai.reload.city_name.should == "wuhan"
+      Dictionary.student_city.map(&:name_en).include?("wuhan").should be_true
     end
 
     it "update city by set city_name to an exist dictionary name" do
