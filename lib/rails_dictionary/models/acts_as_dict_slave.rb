@@ -35,7 +35,7 @@ module RailsDictionary
 
       # add a belongs_to(Dictionary) association and a named_{column} method
       def add_dynamic_column_method
-        dict_mapping_columns.each { |e| belongs_to "#{e.to_s}_dict".to_sym,class_name: "Dictionary",foreign_key: e.to_sym }
+        dict_mapping_columns.each { |e| belongs_to "#{e}_dict".to_sym,class_name: "Dictionary",foreign_key: e.to_sym }
         dict_mapping_columns.each { |ele| named_dict_value ele.to_sym }
       end
 
@@ -46,13 +46,15 @@ module RailsDictionary
       #   self.send(city_dict).try(:send,locale)
       # end
       def named_dict_value(method_name)
-        belongs_to_name="#{method_name.to_s}_dict".to_sym
-        method_name="named_#{method_name.to_s}"
+        belongs_to_name="#{method_name}_dict".to_sym
+        origin_method_name = method_name
+        method_name="named_#{method_name}"
         define_method(method_name) do | locale=nil |
           locale = locale.presence || default_dict_locale.presence || :en
           locale = "name_#{locale}"
           self.send(belongs_to_name).try(:send,locale)
         end
+        alias_method "#{origin_method_name}_name".to_sym, method_name.to_sym
       end
 
     end

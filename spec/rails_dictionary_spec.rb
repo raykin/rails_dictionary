@@ -78,6 +78,8 @@ describe RailsDictionary do
 
     it "named_city with different locale" do
       stu_shanghai.named_city(:en).should == "shanghai"
+      stu_shanghai.city_name(:en).should == "shanghai"
+      stu_shanghai.city_name.should == "shanghai"
       stu_shanghai.named_city("").should == "shanghai"
       stu_beijing.named_city(:fr).should == "Pékin"
     end
