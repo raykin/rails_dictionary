@@ -74,6 +74,7 @@ Here is what should be like.Student model can be other models.
       end
 
       class Student < ActiveRecord::Base
+        # use acts_as_dict_slave when your rails_dictionary version < 0.2
         acts_as_dict_consumer
       end
 
