@@ -1,3 +1,6 @@
+= Plan
+  I plan wrote a new gem to replace it. The new gem will use rails STI. so we dont need maintenance dict_types table. It should be a better solution.
+
 = Intro
 There are always some static data(not static page) in application.For example product type or student diploma type.
 
