@@ -25,6 +25,7 @@ module RailsDictionary
       def method_missing(method_id,options={})
         if DictType.all_types.include? method_id
           method_name=method_id.to_s.downcase
+          # TODO: If cache engine is failed, then the code will failed with null cant dup
           Rails.cache.fetch("Dictionary.#{method_name}") { dict_type_name_eq(method_name).to_a }
           listed_attr=Rails.cache.read("Dictionary.#{method_name}").dup  # Instance of ActiveRecord::Relation can not be dup?
           build_scope_method(method_id)
