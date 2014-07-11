@@ -33,6 +33,8 @@ describe RailsDictionary do
     end
 
     it "after one record removed" do
+      DictType.all_types
+      DictType.whole_types.should == [:student_city, :student_school]
       dt_stu_school.destroy
       DictType.all_types.should == [:student_city]
       DictType.tab_and_column.should == Hash[:student,["city"]]

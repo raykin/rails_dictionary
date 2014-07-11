@@ -9,7 +9,8 @@ module RailsDictionary
     module ClassMethods
 
       def all_types
-        whole_types || whole_types = all.map(&:name).map(&:to_sym)
+        whole_types ||
+          self.whole_types = all.map(&:name).map(&:to_sym)
       end
 
       # short method to transfer id to name or name to id
@@ -46,7 +47,7 @@ module RailsDictionary
 
     module InstanceMethods
       def delete_all_caches
-        whole_types = nil
+        self.whole_types = nil
         return true
       end
     end
