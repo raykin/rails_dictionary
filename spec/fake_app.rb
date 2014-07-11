@@ -6,6 +6,7 @@ ActiveRecord::Base.establish_connection(:test)
 # config
 app = Class.new(Rails::Application)
 app.config.active_support.deprecation = :log
+app.config.eager_load = false
 app.initialize!
 
 # models

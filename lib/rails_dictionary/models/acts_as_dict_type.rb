@@ -3,16 +3,13 @@ module RailsDictionary
     def self.included(base)
       base.extend(ClassMethods)
       base.send :include, InstanceMethods
+      base.mattr_accessor :whole_types
     end
 
     module ClassMethods
 
       def all_types
-        Rails.cache.fetch("DictType.all_types") { all.map(&:name).map(&:to_sym) }.dup
-      end
-
-      def cached_all
-        Rails.cache.fetch("DictType.cached_all") { all }.dup
+        whole_types || whole_types = all.map(&:name).map(&:to_sym)
       end
 
       # short method to transfer id to name or name to id
@@ -49,8 +46,7 @@ module RailsDictionary
 
     module InstanceMethods
       def delete_all_caches
-        Rails.cache.delete("DictType.all_types")
-        Rails.cache.delete("DictType.cached_all")
+        whole_types = nil
         return true
       end
     end

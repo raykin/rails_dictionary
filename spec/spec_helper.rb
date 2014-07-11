@@ -1,4 +1,5 @@
 # copy and modify the test design of kaminari(a paginate gem for Rails3)
+RAILS_ENV = 'test'
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 require 'rails'
@@ -17,3 +18,5 @@ RSpec.configure do |config|
   config.use_transactional_fixtures = true
   CreateAllTables.up unless ActiveRecord::Base.connection.table_exists? 'dict_types'
 end
+
+require 'byebug'

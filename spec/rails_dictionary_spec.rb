@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-require 'debugger'
 require File.expand_path('spec_helper', File.dirname(__FILE__))
 
 describe RailsDictionary::ActiveRecordExtension do
