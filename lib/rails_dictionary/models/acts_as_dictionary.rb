@@ -64,7 +64,9 @@ module RailsDictionary
         scope_method_name = "scoped_#{name}".to_sym
         unless respond_to? scope_method_name
           define_singleton_method scope_method_name do
-            dict_type_name_eq(name).scoped
+            # see http://stackoverflow.com/questions/18198963/with-rails-4-model-scoped-is-deprecated-but-model-all-cant-replace-it
+            # for usage of where(nil)
+            dict_type_name_eq(name).where(nil)
           end
         end
       end
