@@ -14,6 +14,7 @@ Gem::Specification.new do |s|
   s.rubyforge_project = "rails_dictionary"
 
   s.add_runtime_dependency 'rails', '> 4.0'
+  s.add_runtime_dependency 'database_cleaner'
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test}/*`.split("\n")

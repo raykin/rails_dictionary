@@ -25,6 +25,12 @@ CreateAllTables.up unless ActiveRecord::Base.connection.table_exists? 'dictionar
 
 require 'minitest/autorun'
 
+require 'database_cleaner'
+
+DatabaseCleaner.strategy = :truncation
 
 class TestSupporter < Minitest::Test
+  def setup
+    DatabaseCleaner.clean
+  end
 end

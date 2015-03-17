@@ -1,6 +1,6 @@
 require File.expand_path('test_helper', File.dirname(__FILE__))
 
-class TestConsumeOneColumn < Minitest::Test
+class TestConsumeOneColumn < TestSupporter
   def setup
     Student.acts_as_dict_consumer on: :city
   end
@@ -16,7 +16,7 @@ class TestConsumeOneColumn < Minitest::Test
   end
 end
 
-class TestConsumeMultipleColumns < Minitest::Test
+class TestConsumeMultipleColumns < TestSupporter
 
   def setup
     Student.acts_as_dict_consumer on: [:city, :school]

@@ -13,14 +13,14 @@ module TestRailsDictionary
 
   class PreTestDatabase < TestSupporter
 
-    # Add database cleaner to clean up data
-    # def test_no_dictionary_data_exist_before
-    #   assert_equal 0, Dictionary.count, 'dicionaries table should be blank'
-    # end
+    def test_no_dictionary_data_exist_before
+      assert_equal 0, Dictionary.count, 'dicionaries table should be blank'
+    end
   end
 
   class TestInitSubDictClass < TestSupporter
     def setup
+      super
       Dictionary.acts_as_dictionary
       if Dictionary.const_defined? 'City'
         Dictionary.send :remove_const, 'City'
