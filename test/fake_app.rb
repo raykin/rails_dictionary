@@ -1,4 +1,3 @@
-
 # database
 ActiveRecord::Base.configurations = {'test' => {:adapter => 'sqlite3', :database => ':memory:'}}
 ActiveRecord::Base.establish_connection(:test)
@@ -8,11 +7,6 @@ app = Class.new(Rails::Application)
 app.config.active_support.deprecation = :log
 app.config.eager_load = false
 app.initialize!
-
-# models
-class DictType < ActiveRecord::Base
-  acts_as_dict_type
-end
 
 class Dictionary < ActiveRecord::Base
   acts_as_dictionary
@@ -24,13 +18,11 @@ end
 #migrations
 class CreateAllTables < ActiveRecord::Migration
   def self.up
-    create_table(:dict_types) {|t| t.string :name}
-    create_table(:dictionaries) {|t| t.string :name_en; t.string :name_zh ; t.string :name_fr ; t.integer :dict_type_id}
-    create_table(:students) {|t| t.string :email; t.integer :city; t.integer :school}
+    create_table(:dictionaries) {|t| t.string :name; t.string :type}
+    create_table(:students) {|t| t.string :email; t.integer :city_id; t.integer :school_id}
   end
 
   def self.down
-    drop_table :dict_types
     drop_table :dictionaries
     drop_table :students
   end

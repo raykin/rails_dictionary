@@ -29,7 +29,7 @@ See change log for brief info.
 == Sample
 Run following task will give you a simple start.Maybe you should try it in a new application first.
     rake dicts:generate
-    rake dicts:sample_slave
+    rake dicts:sample_consumer
     rake db:migrate
     rake dicts:sample_data
 These task are just generate table dictionaries,dict_types,students and some sample data.The data should be
@@ -80,7 +80,7 @@ Here is what should be like.Student model can be other models.
       end
 
       class Student < ActiveRecord::Base
-        # use acts_as_dict_slave when your rails_dictionary version < 0.2
+        # use acts_as_dict_consumer when your rails_dictionary version < 0.2
         acts_as_dict_consumer
       end
 

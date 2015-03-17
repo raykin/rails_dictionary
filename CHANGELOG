@@ -1,3 +1,7 @@
+0.3.1
+  Replace rspec with minitest.
+  Replace dict_types with STI.
+
 0.2
   Add Support For Rails4
 
