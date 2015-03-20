@@ -4,11 +4,6 @@ require File.expand_path('test_helper', File.dirname(__FILE__))
 
 class TestRailsDictionary < TestSupporter
 
-  def setup
-    super
-    RailsDictionary.init_dict_class_for_test(:Dictionary)
-  end
-
   class TestActiveRecordExtension < TestRailsDictionary
     [:acts_as_dictionary, :acts_as_dict_consumer].each do |method_name|
       define_method "test_#{method_name}_exists_ar" do

@@ -4,9 +4,9 @@ module TestLookup
 
   class TestAsDictionary < TestSupporter
 
-    def initialize(opt)
-      RailsDictionary.init_dict_class_for_test(:Lookup)
-      super
+    def setup
+      RailsDictionary.config.dictionary_klass = :Lookup
+      Lookup.acts_as_dictionary
     end
 
     def test_lookup

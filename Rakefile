@@ -5,5 +5,7 @@ task :default => [:test]
 
 desc "Running Test"
 task :test do
-  Dir.glob('./test/**/*_test.rb') { |f| require f }
+  system 'ruby test/rails_dictionary_test.rb'
+  system 'ruby test/acts_as_consumer_test.rb'
+  system 'ruby test/lookup_test.rb'
 end

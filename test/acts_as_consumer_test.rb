@@ -2,10 +2,6 @@ require File.expand_path('test_helper', File.dirname(__FILE__))
 
 class TestConsumer < TestSupporter
 
-  def setup
-    super
-    RailsDictionary.init_dict_class_for_test(:Dictionary)
-  end
 end
 
 class TestConsumeOneColumn < TestConsumer
