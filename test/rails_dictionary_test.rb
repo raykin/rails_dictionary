@@ -1,9 +1,15 @@
 # -*- coding: utf-8 -*-
 require File.expand_path('test_helper', File.dirname(__FILE__))
 
-module TestRailsDictionary
 
-  class TestActiveRecordExtension < TestSupporter
+class TestRailsDictionary < TestSupporter
+
+  def setup
+    super
+    RailsDictionary.init_dict_class_for_test(:Dictionary)
+  end
+
+  class TestActiveRecordExtension < TestRailsDictionary
     [:acts_as_dictionary, :acts_as_dict_consumer].each do |method_name|
       define_method "test_#{method_name}_exists_ar" do
         assert_includes ActiveRecord::Base.methods, method_name
@@ -11,20 +17,19 @@ module TestRailsDictionary
     end
   end
 
-  class PreTestDatabase < TestSupporter
+  class PreTestDatabase < TestRailsDictionary
 
     def test_no_dictionary_data_exist_before
       assert_equal 0, Dictionary.count, 'dicionaries table should be blank'
     end
   end
 
-  class TestInitSubDictClass < TestSupporter
+  class TestInitSubDictClass < TestRailsDictionary
     def setup
       super
-      Dictionary.acts_as_dictionary
       if Dictionary.const_defined? 'City'
         Dictionary.send :remove_const, 'City'
-        RailsDictionary.config.defined_type_class.delete('Dictionary::City')
+        RailsDictionary.config.defined_sti_klass.delete('Dictionary::City')
       end
     end
 
@@ -49,9 +54,9 @@ module TestRailsDictionary
   end
 end
 
-
-class TestWithDB < TestSupporter
+class TestWithDB < TestRailsDictionary
   def setup
+    super
     Dictionary.acts_as_dictionary
     @beijing = Dictionary.new(name: 'beijing', type: 'Dictionary::City')
     @beijing.save!
@@ -65,17 +70,24 @@ end
 
 class TestStudent < TestWithDB
   def setup
-    Student.acts_as_dict_consumer on: [:city]
     super
+    Student.acts_as_dict_consumer on: [:city]
   end
 
   def test_city_name_equal_to_exist_dictionary_name
-    # assert_equal 1, Dictionary.where(name: "beijing").count
-    # @stu_shanghai.update_attributes city_name: "beijing"
-    # assert_equal 'beijing', @stu_shanghai.reload.city_name
-    # assert_equal 1, Dictionary.where(name_en: "beijing").count
+    assert_equal 1, Dictionary.where(name: "beijing").count
+    @stu_shanghai.update_attributes city_name: "beijing"
+    assert_equal 'beijing', @stu_shanghai.reload.city.name
+    assert_equal 1, Dictionary.where(name: "beijing").count
   end
 
+  def create_a_student_with_shanghai_city
+    s = Student.create(city_name: "shanghai")
+    s.reload
+    s.city.name.should == "shanghai"
+    assert_equal Dictionary.find_by(name: 'shanghai').id, s.city_id
+    assert_equal 1, Dictionary.where(name: "shanghai").count
+  end
 end
 
 # describe RailsDictionary do
@@ -85,28 +97,6 @@ end
 #   let!(:dy_beijing) { Dictionary.create! name_en: "beijing",name_zh: "北京",name_fr: "Pékin", type: 'City' }
 #   let!(:stu_beijing) { Student.create! email: "beijing@dict.com",city_id: dy_beijing.id }
 #   let!(:stu_shanghai) { Student.create! email: "shanghai@dict.com",city_id: dy_shanghai.id }
-
-#     it "after one record removed" do
-#       DictType.all_types
-#       DictType.whole_types.should == [:student_city, :student_school]
-#       dt_stu_school.destroy
-#       DictType.all_types.should == [:student_city]
-#       DictType.tab_and_column.should == Hash[:student,["city"]]
-#     end
-#   end
-
-#   describe Dictionary do
-#     it "should respond to student_city" do
-#       Dictionary.should respond_to(:student_city)
-#     end
-
-#     it "generate student_city method" do
-#       Dictionary.student_city.should == [dy_shanghai,dy_beijing]
-#     end
-
-#     it "generate student_city method with locale" do
-#       Dictionary.student_city(:locale => :zh).should == [["北京", 2],["上海",1]]
-#     end
 
 #     it "build scope method scoped_student_city" do
 #       Dictionary.scoped_student_city.class.name.should == "ActiveRecord::Relation"
@@ -148,11 +138,6 @@ end
 #       Dictionary.where(name_en: "beijing").count.should eq(1)
 #     end
 
-#     it "create a student with shanghai city" do
-#       s = Student.create(city_name: "shanghai")
-#       s.reload
-#       s.city_name.should == "shanghai"
-#     end
 
 #     it "override default locale" do
 #       Student.acts_as_dict_slave :locale => :fr

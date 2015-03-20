@@ -13,6 +13,7 @@ module RailsDictionary
         # scope :dict_type_name_eq, lambda { |name| joins(:dict_type).where("dict_types.name" => name) }
 
         include ActsAsDictionary
+        validates_uniqueness_of :name, scope: [inheritance_column]
       end
 
       # Ex: acts_as_dict_consumer on: :city

@@ -34,3 +34,16 @@ class TestSupporter < Minitest::Test
     DatabaseCleaner.clean
   end
 end
+
+
+module RailsDictionary
+
+  def self.init_dict_class_for_test(klass)
+    if RailsDictionary.config.dictionary_klass != klass
+      RailsDictionary.config.defined_sti_klass = []
+    end
+    RailsDictionary.config.dictionary_klass = klass
+    RailsDictionary.instance_variable_set :@dclass, nil
+    klass.to_s.constantize.acts_as_dictionary
+  end
+end
