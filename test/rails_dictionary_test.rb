@@ -1,6 +1,4 @@
-# -*- coding: utf-8 -*-
 require File.expand_path('test_helper', File.dirname(__FILE__))
-
 
 class TestRailsDictionary < TestSupporter
 
@@ -84,59 +82,3 @@ class TestStudent < TestWithDB
     assert_equal 1, Dictionary.where(name: "shanghai").count
   end
 end
-
-# describe RailsDictionary do
-#   let!(:dt_stu_city) { DictType.create! :name => "student_city" }
-#   let!(:dt_stu_school) { DictType.create! :name => "student_school" }
-#   let!(:dy_shanghai) { Dictionary.create! name_en: "shanghai",name_zh: "上海",name_fr: "shanghai", type: 'City' }
-#   let!(:dy_beijing) { Dictionary.create! name_en: "beijing",name_zh: "北京",name_fr: "Pékin", type: 'City' }
-#   let!(:stu_beijing) { Student.create! email: "beijing@dict.com",city_id: dy_beijing.id }
-#   let!(:stu_shanghai) { Student.create! email: "shanghai@dict.com",city_id: dy_shanghai.id }
-
-#     it "build scope method scoped_student_city" do
-#       Dictionary.scoped_student_city.class.name.should == "ActiveRecord::Relation"
-#       Dictionary.scoped_student_city.where(:id => 1).should == [dy_shanghai]
-#     end
-
-#     it "after record added or removed" do
-#       @dy_wuhan=Dictionary.create! name_en: "wuhan",name_zh: "武汉",name_fr: "wuhan",dict_type_id: dt_stu_city.id
-#       Dictionary.student_city(:locale => :en).should == [["beijing", 2],["shanghai",1],["wuhan", 3]]
-#       @dy_wuhan.destroy
-#       Dictionary.student_city(:locale => :en).should == [["beijing", 2],["shanghai",1]]
-#     end
-
-#   end
-
-#   describe Student do
-#     before :each do
-#       Student.acts_as_dict_slave
-#     end
-
-#     it "named_city with different locale" do
-#       stu_shanghai.named_city(:en).should == "shanghai"
-#       stu_shanghai.city_name(:en).should == "shanghai"
-#       stu_shanghai.city_name.should == "shanghai"
-#       stu_shanghai.named_city("").should == "shanghai"
-#       stu_beijing.named_city(:fr).should == "Pékin"
-#     end
-
-#     it "update city by set city_name to a value" do
-#       stu_shanghai.update_attributes city_name: "wuhan"
-#       stu_shanghai.reload.city_name.should == "wuhan"
-#       Dictionary.student_city.map(&:name_en).include?("wuhan").should be_true
-#     end
-
-#     it "update city by set city_name to an exist dictionary name" do
-#       Dictionary.where(name_en: "beijing").count.should eq(1)
-#       stu_shanghai.update_attributes city_name: "beijing"
-#       stu_shanghai.reload.city_name.should eq('beijing')
-#       Dictionary.where(name_en: "beijing").count.should eq(1)
-#     end
-
-
-#     it "override default locale" do
-#       Student.acts_as_dict_slave :locale => :fr
-#       stu_beijing.named_city.should == "Pékin"
-#     end
-#   end
-# end
