@@ -1,7 +1,6 @@
 ## Usage
 
-Version 0.3 is not backward compatible!!
-Only for version 0.3.
+`Version 0.3 is not backward compatible!!`
 
 See [README.rdoc](https://github.com/raykin/rails_dictionary/blob/sti/README.v2.0.rdoc) for version 0.2.
 
