@@ -51,10 +51,7 @@ class TestWithDB < TestRailsDictionary
   def setup
     super
     Dictionary.acts_as_dictionary
-    @beijing = Dictionary.new(name: 'beijing', type: 'Dictionary::City')
-    @beijing.save!
-
-    @shanghai = Dictionary.create!(name: 'shanghai', type: 'Dictionary::City')
+    @beijing, @shanghai = prepare_city_data
 
     @stu_beijing = Student.create! email: "beijing@dict.com", city_id: @shanghai.id
     @stu_shanghai = Student.create! email: "shanghai@dict.com", city_id: @shanghai.id

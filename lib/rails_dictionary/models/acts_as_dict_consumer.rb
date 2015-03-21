@@ -33,12 +33,19 @@ module RailsDictionary
       #   end
       def dict_name_equal
         relation_name = @dict_relation_name
+        relation_method = @dict_relation_method
         method_name = "#{relation_name}_name="
         class_opt = @opt
         define_method(method_name) do |value, options={}|
-          dict = RailsDictionary.dclass.find_by(name: value, type: class_opt[:class_name])
-          if dict
-            send "#{relation_name}=", dict
+          dicts = RailsDictionary.dclass.where(name: Array(value), type: class_opt[:class_name])
+          if dicts
+            if relation_method == :belongs_to
+              send "#{relation_name}=", dicts.first
+            elsif relation_method == :many_to_many
+              send "#{relation_name}=", dicts.map(&:id)
+            else
+              raise "Wrong relation method name: #{relation_method}"
+            end
           else
             # do nothing ?
           end
@@ -53,7 +60,7 @@ module RailsDictionary
         raise 'params on cant be nil' if @dict_relation_name.nil?
         @dict_relation_method = @opt.delete(:relation_type) || :belongs_to
         # @opt[:foreign_key] ||= "#{@dict_relation_name}_id"
-        @opt[:class_name] ||= "#{RailsDictionary.config.dictionary_klass}::#{@dict_relation_name.to_s.camelize}"
+        @opt[:class_name] ||= "#{RailsDictionary.config.dictionary_klass}::#{@dict_relation_name.to_s.singularize.camelize}"
         ::RailsDictionary.init_dict_sti_class(@opt[:class_name])
         if @dict_relation_method.to_sym == :belongs_to
           send @dict_relation_method, @dict_relation_name, @opt
