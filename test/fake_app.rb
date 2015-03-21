@@ -13,7 +13,6 @@ class Dictionary < ActiveRecord::Base
 end
 
 class Student < ActiveRecord::Base
-
 end
 
 class Lookup < ActiveRecord::Base

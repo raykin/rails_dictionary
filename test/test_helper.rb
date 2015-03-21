@@ -6,20 +6,11 @@ require 'byebug'
 require 'rack/test'
 require 'rails'
 require 'active_record'
-require 'action_controller/railtie'
-require 'action_view/railtie'
 require 'rails_dictionary'
 
 ActiveRecord::Migration.verbose = false
 
 require File.join(File.dirname(__FILE__), 'fake_app')
-
-# $stdout = StringIO.new  # remove the noise output # looks like the create table noise
-
-# RSpec.configure do |config|
-#   config.use_transactional_fixtures = true
-#   CreateAllTables.up unless ActiveRecord::Base.connection.table_exists? 'dict_types'
-# end
 
 CreateAllTables.up unless ActiveRecord::Base.connection.table_exists? 'dictionaries'
 
@@ -37,8 +28,9 @@ class TestSupporter < Minitest::Test
   end
 
   def prepare_city_data
-    [ Dictionary.create!(name: 'beijing', type: 'Dictionary::City'),
-      Dictionary.create!(name: 'shanghai', type: 'Dictionary::City')
+    [
+     Dictionary.create!(name: 'beijing', type: 'Dictionary::City'),
+     Dictionary.create!(name: 'shanghai', type: 'Dictionary::City')
     ]
   end
 end

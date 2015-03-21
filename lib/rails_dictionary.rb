@@ -3,7 +3,8 @@ require File.join(File.dirname(__FILE__), "rails_dictionary/models/acts_as_dicti
 require File.join(File.dirname(__FILE__), "rails_dictionary/models/acts_as_dict_consumer")
 
 # rake tasks not autoload in Rails4
-Dir[File.expand_path('../tasks/**/*.rake',__FILE__)].each { |ext| load ext } if defined?(Rake)
+# todo: may add migration(from 0.2 to 0.3) task
+# Dir[File.expand_path('../tasks/**/*.rake',__FILE__)].each { |ext| load ext } if defined?(Rake)
 
 module RailsDictionary
 

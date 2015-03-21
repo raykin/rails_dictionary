@@ -33,18 +33,18 @@ module RailsDictionary
       #   end
       def dict_name_equal
         relation_name = @dict_relation_name
-        relation_method = @dict_relation_method
+        relation_type = @dict_relation_type
         method_name = "#{relation_name}_name="
         class_opt = @opt
         define_method(method_name) do |value, options={}|
           dicts = RailsDictionary.dclass.where(name: Array(value), type: class_opt[:class_name])
           if dicts
-            if relation_method == :belongs_to
+            if relation_type == :belongs_to
               send "#{relation_name}=", dicts.first
-            elsif relation_method == :many_to_many
+            elsif relation_type == :many_to_many
               send "#{relation_name}=", dicts.map(&:id)
             else
-              raise "Wrong relation method name: #{relation_method}"
+              raise "Wrong relation method name: #{relation_type}"
             end
           else
             # do nothing ?
@@ -58,18 +58,17 @@ module RailsDictionary
         @opt = opt
         @dict_relation_name = @opt.delete :on
         raise 'params on cant be nil' if @dict_relation_name.nil?
-        @dict_relation_method = @opt.delete(:relation_type) || :belongs_to
+        @dict_relation_type = @opt.delete(:relation_type) || :belongs_to
         # @opt[:foreign_key] ||= "#{@dict_relation_name}_id"
         @opt[:class_name] ||= "#{RailsDictionary.config.dictionary_klass}::#{@dict_relation_name.to_s.singularize.camelize}"
         ::RailsDictionary.init_dict_sti_class(@opt[:class_name])
-        if @dict_relation_method.to_sym == :belongs_to
-          send @dict_relation_method, @dict_relation_name, @opt
-        elsif @dict_relation_method.to_sym == :many_to_many
+        if @dict_relation_type.to_sym == :belongs_to
+          send @dict_relation_type, @dict_relation_name, @opt
+        elsif @dict_relation_type.to_sym == :many_to_many
           # no code required?
           # build_many_to_many_dict_relation
         end
         dict_name_equal
-        # how support has_many in one column. actually has_many will the same as has_and_belongs_to_many
       end
 
     end # END ClassMethods
