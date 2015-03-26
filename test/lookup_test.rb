@@ -34,6 +34,7 @@ module TestLookup
       s = Student.new(majors_name: ['art', 'math'])
       s.save!; s.reload
       assert_equal([@art.id, @math.id], s.majors)
+      assert_equal ['art', 'math'], s.named_majors
     end
   end
 end

@@ -8,22 +8,18 @@ module RailsDictionary
 
       # Generate dynamic instance method named_column to consumer model
       # def named_city(locale=nil)
-      #   locale = locale.presence || default_dict_locale.presence || :en
-      #   locale = "name_#{locale}"
-      #   self.send(city_dict).try(:send,locale)
+      #
       # end
-      # alias_method :city_name, :named_city
-      # def named_dict_value(method_name)
-      #   belongs_to_name="#{method_name}_dict".to_sym
-      #   origin_method_name = method_name
-      #   method_name="named_#{method_name}"
-      #   define_method(method_name) do | locale=nil |
-      #     locale = locale.presence || default_dict_locale.presence || :en
-      #     locale = "name_#{locale}"
-      #     self.send(belongs_to_name).try(:send,locale)
-      #   end
-      #   alias_method "#{origin_method_name}_name".to_sym, method_name.to_sym
-      # end
+      #
+      def named_dict_value_for_many_to_many
+        relation_name = @dict_relation_name
+        relation_type = @dict_relation_type
+        class_opt = @opt
+        method_name="named_#{relation_name}"
+        define_method(method_name) do
+          RailsDictionary.dclass.where(id: send(relation_name), type: class_opt[:class_name]).pluck(:name)
+        end
+      end
 
       # Build dynamic method column_name= to the consumer model
       #
@@ -65,8 +61,7 @@ module RailsDictionary
         if @dict_relation_type.to_sym == :belongs_to
           send @dict_relation_type, @dict_relation_name, @opt
         elsif @dict_relation_type.to_sym == :many_to_many
-          # no code required?
-          # build_many_to_many_dict_relation
+          named_dict_value_for_many_to_many
         end
         dict_name_equal
       end
