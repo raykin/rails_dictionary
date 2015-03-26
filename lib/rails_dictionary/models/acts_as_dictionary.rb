@@ -7,13 +7,17 @@ module RailsDictionary
 
     module ClassMethods
 
-      # override to make sure STI class init first
-      def new(opts)
-        type_opt = opts.with_indifferent_access[inheritance_column]
-        RailsDictionary.init_dict_sti_class(type_opt) if type_opt
+      # workaround seems more better than new
+      def subclass_from_attributes(attrs)
+        subclass_name = attrs.with_indifferent_access[inheritance_column]
+        RailsDictionary.init_dict_sti_class(subclass_name) if subclass_name
         super
       end
 
+      def find_sti_class(type_name)
+        RailsDictionary.init_dict_sti_class(type_name)
+        super
+      end
     end # End ClassMethods
 
     module InstanceMethods

@@ -44,6 +44,11 @@ class TestRailsDictionary < TestSupporter
       assert Dictionary, Dictionary::City.superclass
     end
 
+    def test_data_insert_before_type_class_init
+      Dictionary.find_by_sql("insert into Dictionaries (name, type) values ('wuhan', 'Dictionary::City')")
+      assert_equal 1, Dictionary.count
+      assert_equal 'wuhan', Dictionary.last.name
+    end
   end
 end
 
