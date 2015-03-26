@@ -25,8 +25,13 @@ module RailsDictionary
 
   def self.init_dict_sti_class(klass)
     unless config.defined_sti_klass.include?(klass) || Module.const_defined?(klass)
-      subklass = klass.sub "#{config.dictionary_klass}::", ''
-      dclass.const_set subklass, Class.new(dclass)
+      if klass =~ /^#{config.dictionary_klass}::/
+        subklass = klass.sub "#{config.dictionary_klass}::", ''
+        dclass.const_set subklass, Class.new(dclass)
+      else
+        subklass = klass
+        Object.const_set subklass, Class.new(dclass)
+      end
       config.defined_sti_klass.push(klass)
     end
   end

@@ -24,11 +24,21 @@ class TestRailsDictionary < TestSupporter
         Dictionary.send :remove_const, 'City'
         RailsDictionary.config.defined_sti_klass.delete('Dictionary::City')
       end
+      if Object.const_defined? 'School'
+        Object.send :remove_const, 'School'
+        RailsDictionary.config.defined_sti_klass.delete('School')
+      end
+    end
+
+    def test_school_sub_class
+      @shanghai = Dictionary.create!(name: "wuhan first medium school", type: 'School')
+      assert_equal Dictionary, School.superclass
+      assert_includes RailsDictionary.config.defined_sti_klass, 'School'
     end
 
     def test_dictionary_city_class_when_create_dictionary
       @shanghai = Dictionary.create!(name: "shanghai", type: 'Dictionary::City')
-      assert Dictionary, Dictionary::City.superclass
+      assert_equal Dictionary, Dictionary::City.superclass
     end
 
     def test_dictionary_city_class_when_assign_type
