@@ -16,6 +16,7 @@ CreateAllTables.up unless ActiveRecord::Base.connection.table_exists? 'dictionar
 
 Student.serialize :major_array, Array
 Student.serialize :majors, Array
+Student.serialize :major_ids, Array
 
 require 'minitest/autorun'
 require 'database_cleaner'

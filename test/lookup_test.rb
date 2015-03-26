@@ -36,5 +36,15 @@ module TestLookup
       assert_equal([@art.id, @math.id], s.majors)
       assert_equal ['art', 'math'], s.named_majors
     end
+
+    def test_student_with_major_ids
+      # not sure if make it supported by library
+      Student.acts_as_dict_consumer on: :major_ids, relation_type: :many_to_many, class_name: 'Lookup::Major'
+      prepare_data
+      s = Student.new(major_ids_name: ['art', 'math'])
+      s.save!; s.reload
+      assert_equal([@art.id, @math.id], s.major_ids)
+      assert_equal ['art', 'math'], s.named_major_ids
+    end
   end
 end

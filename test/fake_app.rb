@@ -28,6 +28,7 @@ class CreateAllTables < ActiveRecord::Migration
       t.integer :school_id
       t.text :major_array
       t.text :majors
+      t.text :major_ids
     end
     create_table(:lookups) { |t| t.string :name; t.string :type }
   end
