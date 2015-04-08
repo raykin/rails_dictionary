@@ -23,11 +23,12 @@ module RailsDictionary
     @dclass ||= config.dictionary_klass.to_s.constantize
   end
 
-  def self.init_all_subclass
-    dclass.pluck(:type).each do |sub_type|
-      init_dict_sti_class(sub_type)
-    end
-  end
+  # cant solve problems
+  # def self.init_all_subclass
+  #   dclass.pluck(:type).each do |sub_type|
+  #     init_dict_sti_class(sub_type)
+  #   end
+  # end
 
   def self.init_dict_sti_class(klass)
     unless config.defined_sti_klass.include?(klass) || Module.const_defined?(klass)
