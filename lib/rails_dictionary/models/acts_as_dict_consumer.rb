@@ -17,7 +17,7 @@ module RailsDictionary
         class_opt = @opt
         method_name="named_#{relation_name}"
         define_method(method_name) do
-          RailsDictionary.dclass.where(id: send(relation_name), type: class_opt[:class_name]).pluck(:name)
+          class_opt[:class_name].constantize.where(id: send(relation_name)).pluck(:name)
         end
       end
 
@@ -62,8 +62,21 @@ module RailsDictionary
           send @dict_relation_type, @dict_relation_name, @opt
         elsif @dict_relation_type.to_sym == :many_to_many
           named_dict_value_for_many_to_many
+
+          inverse_relation_for_many_to_many if respond_to? "#{@dict_relation_name}_contain".to_sym
         end
         dict_name_equal
+      end
+
+      # Not Tested
+      def inverse_relation_for_many_to_many
+        inverse_of_name = @opt[:inverse_of] || name.downcase.pluralize
+        dict_relation_name = @dict_relation_name
+        current_class = self
+
+        @opt[:class_name].constantize.send :define_method, inverse_of_name.to_sym do
+          current_class.send("#{dict_relation_name}_contain", id)
+        end
       end
 
     end # END ClassMethods
