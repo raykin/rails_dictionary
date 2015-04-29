@@ -32,8 +32,9 @@ module RailsDictionary
         relation_type = @dict_relation_type
         method_name = "#{relation_name}_name="
         class_opt = @opt
+
         define_method(method_name) do |value, options={}|
-          dicts = RailsDictionary.dclass.where(name: Array(value), type: class_opt[:class_name])
+          dicts = class_opt[:class_name].constantize.where(name: Array(value), type: class_opt[:class_name])
           if dicts
             if relation_type == :belongs_to
               send "#{relation_name}=", dicts.first
@@ -57,7 +58,11 @@ module RailsDictionary
         @dict_relation_type = @opt.delete(:relation_type) || :belongs_to
         # @opt[:foreign_key] ||= "#{@dict_relation_name}_id"
         @opt[:class_name] ||= "#{RailsDictionary.config.dictionary_klass}::#{@dict_relation_name.to_s.singularize.camelize}"
-        ::RailsDictionary.init_dict_sti_class(@opt[:class_name])
+        begin
+          @opt[:class_name].constantize
+        rescue NameError
+          ::RailsDictionary.init_dict_sti_class(@opt[:class_name])
+        end
         if @dict_relation_type.to_sym == :belongs_to
           send @dict_relation_type, @dict_relation_name, @opt
         elsif @dict_relation_type.to_sym == :many_to_many
