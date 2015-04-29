@@ -9,7 +9,6 @@ app.config.eager_load = false
 app.initialize!
 
 class Dictionary < ActiveRecord::Base
-  acts_as_dictionary
 end
 
 class Student < ActiveRecord::Base

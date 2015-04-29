@@ -1,5 +1,6 @@
 require File.expand_path('test_helper', File.dirname(__FILE__))
 
+Dictionary.acts_as_dictionary
 class TestRailsDictionary < TestSupporter
 
   class TestActiveRecordExtension < TestRailsDictionary

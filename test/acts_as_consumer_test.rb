@@ -1,14 +1,12 @@
 require File.expand_path('test_helper', File.dirname(__FILE__))
 
-class TestConsumer < TestSupporter
+Dictionary.acts_as_dictionary
 
+class TestConsumer < TestSupporter
 end
 
 class TestConsumeOneColumn < TestConsumer
-  def setup
-    super
-    Student.acts_as_dict_consumer on: :city
-  end
+  Student.acts_as_dict_consumer on: :city
 
   def test_student_should_has_method_city
     assert Student.new.respond_to?(:city), 'student should has method city'
@@ -23,11 +21,7 @@ class TestConsumeOneColumn < TestConsumer
 end
 
 class TestConsumeMultipleColumns < TestConsumer
-
-  def setup
-    super
-    Student.acts_as_dict_consumer on: [:city, :school]
-  end
+  Student.acts_as_dict_consumer on: [:city, :school]
 
   def test_student_should_has_method_city
     assert Student.new.respond_to?(:city), 'student should has method city'
@@ -36,7 +30,7 @@ class TestConsumeMultipleColumns < TestConsumer
     assert Student.new.respond_to?(:create_school), 'student should has method city'
   end
 
-  def test_dictionary_city_and_schoold_exist
+  def test_dictionary_city_and_school_exist
     assert Dictionary.const_defined?('City'), 'Dictionary::City should be defined'
     assert Dictionary.const_defined?('School'), 'Dictionary::City should be defined'
     assert_equal(['Dictionary::City', 'Dictionary::School'], RailsDictionary.config.defined_sti_klass)

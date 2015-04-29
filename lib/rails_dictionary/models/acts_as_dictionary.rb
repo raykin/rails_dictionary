@@ -5,6 +5,8 @@ module RailsDictionary
       base.send :include, InstanceMethods
     end
 
+    # is it worth to setup these workaround to make it auto load STI class?
+    # these workaround are binding too deep with rails
     module ClassMethods
 
       # workaround seems more better than new
