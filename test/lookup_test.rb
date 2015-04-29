@@ -1,5 +1,8 @@
 require File.expand_path('test_helper', File.dirname(__FILE__))
 
+RailsDictionary.config.dictionary_klass = :Lookup
+Lookup.acts_as_dictionary
+
 module TestLookup
 
   class TestAsDictionary < TestSupporter
@@ -7,12 +10,6 @@ module TestLookup
     def prepare_data
       @art = Lookup.create!(name: 'art', type: 'Lookup::Major')
       @math = Lookup.create!(name: 'math', type: 'Lookup::Major')
-    end
-
-    def setup
-      RailsDictionary.config.dictionary_klass = :Lookup
-      Lookup.acts_as_dictionary
-      super
     end
 
     def test_lookup
