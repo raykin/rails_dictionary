@@ -1,7 +1,11 @@
-
 # database
 ActiveRecord::Base.configurations = {'test' => {:adapter => 'sqlite3', :database => ':memory:'}}
-ActiveRecord::Base.establish_connection(:test)
+
+if ActiveRecord::VERSION::MAJOR >= 5
+  ActiveRecord::Base.establish_connection(:adapter => 'sqlite3', :database => ':memory:')
+else
+  ActiveRecord::Base.establish_connection(:test)
+end
 
 # config
 app = Class.new(Rails::Application)
@@ -22,7 +26,7 @@ class Student < ActiveRecord::Base
 end
 
 #migrations
-class CreateAllTables < ActiveRecord::Migration
+class CreateAllTables < ActiveRecord::VERSION::MAJOR >= 5 ? ActiveRecord::Migration[5.0] : ActiveRecord::Migration
   def self.up
     create_table(:dict_types) {|t| t.string :name}
     create_table(:dictionaries) {|t| t.string :name_en; t.string :name_zh ; t.string :name_fr ; t.integer :dict_type_id}

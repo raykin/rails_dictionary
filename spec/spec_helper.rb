@@ -16,6 +16,8 @@ $stdout = StringIO.new  # remove the noise output
 
 RSpec.configure do |config|
   config.use_transactional_fixtures = true
+  # not work, must syntax error
+  # config.expect_with(:rspec) { |c| c.syntax = :should }
   CreateAllTables.up unless ActiveRecord::Base.connection.table_exists? 'dict_types'
 end
 

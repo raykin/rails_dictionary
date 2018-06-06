@@ -4,8 +4,8 @@ source "http://rubygems.org"
 gemspec
 
 group :development,:test do
-  gem 'rspec', '~> 2.14.0'
+  gem 'rspec'
   gem 'byebug'
-  gem "rspec-rails", '2.14.2'
+  gem "rspec-rails"
   gem 'sqlite3'
 end

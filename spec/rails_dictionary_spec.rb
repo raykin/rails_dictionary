@@ -4,7 +4,7 @@ require File.expand_path('spec_helper', File.dirname(__FILE__))
 describe RailsDictionary::ActiveRecordExtension do
   %w[acts_as_dict_type acts_as_dictionary acts_as_dict_slave].each do |method_name|
     it "contains #{method_name}" do
-      ActiveRecord::Base.methods.include?(method_name.to_sym).should be_true
+      expect(ActiveRecord::Base.methods).to include(method_name.to_sym)
     end
   end
 end
@@ -88,7 +88,7 @@ describe RailsDictionary do
     it "update city by set city_name to a value" do
       stu_shanghai.update_attributes city_name: "wuhan"
       stu_shanghai.reload.city_name.should == "wuhan"
-      Dictionary.student_city.map(&:name_en).include?("wuhan").should be_true
+      Dictionary.student_city.map(&:name_en).include?("wuhan").should be_truthy
     end
 
     it "update city by set city_name to an exist dictionary name" do
