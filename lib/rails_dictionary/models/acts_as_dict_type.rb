@@ -18,7 +18,7 @@ module RailsDictionary
       def revert(arg)
         if arg.is_a?(String)
           DictType.where(name: arg).first.try(:id)
-        elsif arg.is_a?(Fixnum)
+        elsif arg.is_a?(Integer)
           DictType.where(id: arg).first.try(:name)
         end
       end
