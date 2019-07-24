@@ -34,7 +34,7 @@ module RailsDictionary
       def acts_as_dict_slave(ops={})
         include RailsDictionary::ActsAsDictSlave
         class_attribute :default_dict_locale, :instance_writer => false
-        cattr_accessor :dict_mapping_columns, :instance_writes => false
+        cattr_accessor :dict_mapping_columns, :instance_writer => false
         self.default_dict_locale = ops[:locale] if ops[:locale]
         self.dict_mapping_columns = dict_columns(ops)
         unless dict_mapping_columns.nil?
