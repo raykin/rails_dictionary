@@ -1,4 +1,3 @@
-# -*- encoding: utf-8 -*-
 $:.push File.expand_path("../lib", __FILE__)
 require "rails_dictionary/version"
 
@@ -14,7 +13,7 @@ Gem::Specification.new do |s|
 
   s.rubyforge_project = "rails_dictionary"
 
-  s.add_runtime_dependency 'rails', '> 3.0'
+  s.add_runtime_dependency 'rails', '> 4.0'
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
