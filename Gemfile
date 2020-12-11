@@ -4,9 +4,9 @@ source "http://rubygems.org"
 gemspec
 
 group :development,:test do
-  gem 'rails', '5.2.4.3'
-  gem 'rspec'
+  gem 'rails', '6.1'
+  gem 'rspec', '3.9.0'
   gem 'pry-byebug'
-  gem "rspec-rails"
+  gem "rspec-rails", '4.0.0'
   gem 'sqlite3'
 end

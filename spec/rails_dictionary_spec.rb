@@ -86,14 +86,14 @@ describe RailsDictionary do
     end
 
     it "update city by set city_name to a value" do
-      stu_shanghai.update_attributes city_name: "wuhan"
+      stu_shanghai.update city_name: "wuhan"
       stu_shanghai.reload.city_name.should == "wuhan"
       Dictionary.student_city.map(&:name_en).include?("wuhan").should be_truthy
     end
 
     it "update city by set city_name to an exist dictionary name" do
       Dictionary.where(name_en: "beijing").count.should eq(1)
-      stu_shanghai.update_attributes city_name: "beijing"
+      stu_shanghai.update city_name: "beijing"
       stu_shanghai.reload.city_name.should eq('beijing')
       Dictionary.where(name_en: "beijing").count.should eq(1)
     end
