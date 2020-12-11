@@ -12,13 +12,12 @@ require File.join(File.dirname(__FILE__), 'fake_app')
 
 require 'rspec/rails'
 
-$stdout = StringIO.new  # remove the noise output
+require 'pry-byebug'
+
+# $stdout = StringIO.new  # remove the noise output. It can also disable pry debugger. Weird
 
 RSpec.configure do |config|
   config.use_transactional_fixtures = true
-  # not work, must syntax error
-  # config.expect_with(:rspec) { |c| c.syntax = :should }
+  config.expect_with(:rspec) { |c| c.syntax = [:should, :expect] }
   CreateAllTables.up unless ActiveRecord::Base.connection.table_exists? 'dict_types'
 end
-
-require 'byebug'

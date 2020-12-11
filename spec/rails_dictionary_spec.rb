@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# coding: utf-8
 require File.expand_path('spec_helper', File.dirname(__FILE__))
 
 describe RailsDictionary::ActiveRecordExtension do
@@ -107,6 +107,14 @@ describe RailsDictionary do
     it "override default locale" do
       Student.acts_as_dict_slave :locale => :fr
       stu_beijing.named_city.should == "Pékin"
+    end
+
+    it "create a student with new city(reproduce conflict error with Rails5.2.0)" do
+      s = Student.new
+      s.city_name = 'Sedan'
+      s.save
+      s.reload
+      s.city_name.should == 'Sedan'
     end
   end
 end
