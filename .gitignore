@@ -1,7 +1,5 @@
 pkg/
 .git/
-.gitignore
-Gemfile.lock
 tmp/*
 .idea/
 .byebug_history
