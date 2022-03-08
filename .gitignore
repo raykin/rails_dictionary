@@ -3,3 +3,4 @@ pkg/
 tmp/*
 .idea/
 .byebug_history
+log/
