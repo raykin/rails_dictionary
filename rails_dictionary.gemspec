@@ -7,13 +7,12 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Raykin Lee"]
   s.email       = ["raykincoldxiao@campus.com"]
+  s.licenses    = ['MIT']
   s.homepage    = "https://github.com/raykin/rails_dictionary"
   s.summary     = %q{dictionary data for web application}
   s.description = %q{Rails plugin for mapping static data of web application to Dictionary class}
 
-  s.rubyforge_project = "rails_dictionary"
-
-  s.add_runtime_dependency 'rails', '> 4.0'
+  s.add_runtime_dependency 'rails', '> 6.0', '< 7.1'
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
