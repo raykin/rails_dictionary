@@ -23,7 +23,7 @@ module RailsDictionary
       #   the sort would be failed of ArgumentError: comparison of Array with Array failed
       #   split this method ,make it more short and maintainance
       def method_missing(method_id,options={})
-        if DictType.all_types.include? method_id
+        if ::DictType.all_types.include? method_id
           method_name=method_id.to_s.downcase
           # TODO: If cache engine is failed, then the code will failed with null cant dup
           Rails.cache.fetch("Dictionary.#{method_name}") { dict_type_name_eq(method_name).to_a }
@@ -56,7 +56,7 @@ module RailsDictionary
       end
 
       def respond_to?(name, include_private=false)
-        DictType.all_types.include?(name) || super
+        ::DictType.all_types.include?(name) || super
       end
 
       private
@@ -76,7 +76,7 @@ module RailsDictionary
 
     module InstanceMethods
       def delete_dicts_cache
-        method_name=DictType.revert(self.dict_type_id)
+        method_name = ::DictType.revert(self.dict_type_id)
         Rails.cache.delete("Dictionary.#{method_name}")
         return true
       end
