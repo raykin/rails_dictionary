@@ -1,16 +1,13 @@
 module RailsDictionary
   module ActsAsDictSlave
-    def self.included(base)
-      base.extend(ClassMethods)
-    end
+    extend ActiveSupport::Concern
 
-    module ClassMethods
-
+    class_methods do
       # return columns that exist in DictType#tab_and_column
       def columns_in_dict_type
         if ActiveRecord::VERSION::STRING < '3.1'
           DictType.tab_and_column[self.name.underscore.to_sym]
-        elsif DictType.table_exists?
+        elsif ::DictType.table_exists?
           DictType.tab_and_column[self.name.underscore.to_sym]
         else
           []
@@ -82,7 +79,7 @@ module RailsDictionary
         end
       end
 
-    end # END ClassMethods
+    end # END class_methods
 
   end
 end

@@ -69,6 +69,7 @@ describe RailsDictionary do
   end
 
   describe Student do
+    # Run it because dict type value has cached at runtime but data inserted after cache created
     before :each do
       Student.acts_as_dict_slave
     end
@@ -105,7 +106,7 @@ describe RailsDictionary do
     end
 
     it "override default locale" do
-      Student.acts_as_dict_slave :locale => :fr
+      Student.acts_as_dict_consumer :locale => :fr
       stu_beijing.named_city.should == "Pékin"
     end
 

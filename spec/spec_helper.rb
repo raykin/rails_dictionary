@@ -20,4 +20,5 @@ RSpec.configure do |config|
   config.use_transactional_fixtures = true
   config.expect_with(:rspec) { |c| c.syntax = [:should, :expect] }
   CreateAllTables.up unless ActiveRecord::Base.connection.table_exists? 'dict_types'
+  require File.join(File.dirname(__FILE__), 'init_models')
 end

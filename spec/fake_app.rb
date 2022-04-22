@@ -13,18 +13,6 @@ app.config.active_support.deprecation = :log
 app.config.eager_load = false
 app.initialize!
 
-# models
-class DictType < ActiveRecord::Base
-  acts_as_dict_type
-end
-
-class Dictionary < ActiveRecord::Base
-  acts_as_dictionary
-end
-
-class Student < ActiveRecord::Base
-end
-
 #migrations
 class CreateAllTables < ActiveRecord::VERSION::MAJOR >= 5 ? ActiveRecord::Migration[5.0] : ActiveRecord::Migration
   def self.up

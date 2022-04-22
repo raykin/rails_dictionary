@@ -1,10 +1,10 @@
+require "active_support/concern"
+
 module RailsDictionary
   module ActsAsDictionary
-    def self.included(base)
-      base.extend(ClassMethods)
-    end
+    extend ActiveSupport::Concern
 
-    module ClassMethods
+    class_methods do
 
       # For rails3
       # I thought it would be better to define a method in method_missing, Not just generate cache.
@@ -71,7 +71,7 @@ module RailsDictionary
         end
       end
 
-    end # End ClassMethods
+    end # End class_method
 
     def delete_dicts_cache
       method_name = ::DictType.revert(self.dict_type_id)
