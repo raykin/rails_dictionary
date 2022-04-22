@@ -2,7 +2,6 @@ module RailsDictionary
   module ActsAsDictionary
     def self.included(base)
       base.extend(ClassMethods)
-      base.send :include,InstanceMethods
     end
 
     module ClassMethods
@@ -74,13 +73,10 @@ module RailsDictionary
 
     end # End ClassMethods
 
-    module InstanceMethods
-      def delete_dicts_cache
-        method_name = ::DictType.revert(self.dict_type_id)
-        Rails.cache.delete("Dictionary.#{method_name}")
-        return true
-      end
-    end # End InstanceMethods
-
+    def delete_dicts_cache
+      method_name = ::DictType.revert(self.dict_type_id)
+      Rails.cache.delete("Dictionary.#{method_name}")
+      return true
+    end
   end
 end

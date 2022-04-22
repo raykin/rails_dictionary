@@ -2,7 +2,6 @@ module RailsDictionary
   module ActsAsDictType
     def self.included(base)
       base.extend(ClassMethods)
-      base.send :include, InstanceMethods
       base.mattr_accessor :whole_types
     end
 
@@ -45,12 +44,9 @@ module RailsDictionary
       end
     end
 
-    module InstanceMethods
-      def delete_all_caches
-        self.whole_types = nil
-        return true
-      end
+    def delete_all_caches
+      self.whole_types = nil
+      return true
     end
-
   end
 end
