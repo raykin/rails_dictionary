@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.summary     = %q{dictionary data for web application}
   s.description = %q{Rails plugin for mapping static data of web application to Dictionary class}
 
-  s.add_runtime_dependency 'rails', '> 6.0', '< 7.1'
+  s.add_runtime_dependency 'rails', '> 6.0', '< 7.2'
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
