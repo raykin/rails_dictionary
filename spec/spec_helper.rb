@@ -12,9 +12,7 @@ require File.join(File.dirname(__FILE__), 'fake_app')
 
 require 'rspec/rails'
 
-require 'pry-byebug'
-
-# $stdout = StringIO.new  # remove the noise output. It can also disable pry debugger. Weird
+# $stdout = StringIO.new  # remove the noise outputo
 
 RSpec.configure do |config|
   config.use_transactional_fixtures = true

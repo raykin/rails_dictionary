@@ -4,3 +4,5 @@ tmp/*
 .idea/
 .byebug_history
 log/
+.DS_Store
+.ruby-version
