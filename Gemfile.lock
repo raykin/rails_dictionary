@@ -1,8 +1,8 @@
 PATH
   remote: .
   specs:
-    rails_dictionary (0.2.6)
-      rails (< 8)
+    rails_dictionary (0.2.8)
+      rails (< 9)
 
 GEM
   remote: https://rubygems.org/
@@ -231,9 +231,9 @@ PLATFORMS
   x86_64-linux-musl
 
 DEPENDENCIES
-  rails (< 8.0)
+  rails (< 9.0)
   rails_dictionary!
-  rspec-rails (< 8)
+  rspec-rails (< 9)
   sqlite3
 
 RUBY VERSION

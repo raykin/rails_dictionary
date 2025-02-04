@@ -6,7 +6,7 @@ ruby '> 3.3'
 gemspec
 
 group :development,:test do
-  gem 'rails', '< 8.0'
-  gem "rspec-rails", '< 8'
+  gem 'rails', '< 9.0'
+  gem "rspec-rails", '< 9'
   gem 'sqlite3'
 end
