@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby: [ "3.3", "3.4" ]
+        rails: [ "7.1", "7.2", "8.0" ]
+
+    name: Ruby ${{ matrix.ruby }} / Rails ${{ matrix.rails }}
+    env:
+      RAILS_VERSION: ${{ matrix.rails }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Remove lockfile so the matrix can resolve its Rails version
+        run: rm -f Gemfile.lock
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
+
+      - name: Run tests
+        run: bundle exec rake

@@ -39,6 +39,14 @@ describe RailsDictionary do
       DictType.all_types.should == [:student_city]
       DictType.tab_and_column.should == Hash[:student,["city"]]
     end
+
+    # Regression: an empty result must not be memoized as a permanent [].
+    # insert bypasses callbacks so whole_types is not reset for us.
+    it "recomputes after being first read while empty (load-order bug)" do
+      DictType.whole_types = []
+      DictType.insert({ name: "country" })
+      DictType.all_types.should include(:country)
+    end
   end
 
   describe Dictionary do
@@ -64,6 +72,34 @@ describe RailsDictionary do
       Dictionary.student_city(:locale => :en).should == [["beijing", 2],["shanghai",1],["wuhan", 3]]
       @dy_wuhan.destroy
       Dictionary.student_city(:locale => :en).should == [["beijing", 2],["shanghai",1]]
+    end
+
+    it "lists categories" do
+      Dictionary.categories.should == [:student_city, :student_school]
+    end
+
+    it "query: true bypasses a stale cache and hits the DB" do
+      Dictionary.student_city.map(&:name_en) # warm the cache
+      Dictionary.insert({ name_en: "wuhan", dict_type_id: dt_stu_city.id }) # no callbacks -> cache stays stale
+      Dictionary.student_city.map(&:name_en).should_not include("wuhan")
+      Dictionary.student_city(query: true).map(&:name_en).should include("wuhan")
+    end
+
+    it "adds and removes a dictionary entry" do
+      Dictionary.add(:student_city, "wuhan")
+      Dictionary.student_city(query: true).map(&:name_en).should include("wuhan")
+      Dictionary.remove(:student_city, "wuhan")
+      Dictionary.student_city(query: true).map(&:name_en).should_not include("wuhan")
+    end
+
+    it "returns form-ready options without the deprecated locale arg" do
+      Dictionary.options_for(:student_city).should == [["shanghai", 1], ["beijing", 2]]
+      Dictionary.options_for(:student_city, locale: :fr).should == [["shanghai", 1], ["Pékin", 2]]
+    end
+
+    it "deprecates the :locale option on the lookup method" do
+      expect(RailsDictionary.deprecator).to receive(:warn)
+      Dictionary.student_city(locale: :en)
     end
 
   end
@@ -127,5 +163,10 @@ describe Array do
   it "extract to hash" do
     an_array.extract_to_hash(%w[student admin]).should == expected_hash
     an_array.extract_to_hash(%w[students]).should == blank_hash
+  end
+
+  it "is deprecated in favor of RailsDictionary.extract_to_hash" do
+    expect(RailsDictionary.deprecator).to receive(:warn)
+    an_array.extract_to_hash(%w[student admin])
   end
 end

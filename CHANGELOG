@@ -1,3 +1,15 @@
+0.3.0
+  Replace the inner Dictionary.method_missing with generated per-type methods (define_singleton_method), regenerated at boot (Railtie) and on DictType writes.
+  Fix load-order bug: DictType.all_types no longer freezes as [] when first called on an empty table (use .presence). The config/initializers DictType.table_exists? workaround is no longer needed.
+  Fix stale-id bug under forked, multi-DB parallel tests: the Dictionary lookup cache key is now scoped per database, preventing cross-DB foreign-key violations.
+  Require Rails >= 7.1 and Ruby >= 3.3.
+  Add GitHub Actions CI matrix (Ruby 3.3/3.4 x Rails 7.1/7.2/8.0).
+  Add Dictionary.categories to list all categories.
+  Add query: option (Dictionary.city(query: true)) to bypass the cache and hit the DB.
+  Add CRUD helpers Dictionary.add(category, name) and Dictionary.remove(category, name).
+  Add Dictionary.options_for(category, locale:) returning options_for_select-ready pairs.
+  Deprecate the :locale option on Dictionary.<category> and the Array#extract_to_hash monkey-patch (removed in v1.0).
+
 0.2.4
   Support Rails7
 0.2

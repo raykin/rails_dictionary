@@ -6,7 +6,12 @@ ruby '> 3.3'
 gemspec
 
 group :development,:test do
-  gem 'rails', '< 9.0'
+  rails_version = ENV.fetch('RAILS_VERSION', nil)
+  if rails_version
+    gem 'rails', "~> #{rails_version}.0"
+  else
+    gem 'rails', '< 9.0'
+  end
   gem "rspec-rails", '< 9'
   gem 'sqlite3'
 end

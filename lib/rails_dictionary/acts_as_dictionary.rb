@@ -4,40 +4,47 @@ module RailsDictionary
   module ActsAsDictionary
     extend ActiveSupport::Concern
 
+    included do
+      RailsDictionary.register_dictionary_model(self)
+    end
+
     class_methods do
 
-      # For rails3
-      # I thought it would be better to define a method in method_missing, Not just generate cache.
-      #   Cause cache can not store ActiveRecord
-      # Generate methods like Dictionary.student_city
-      #   Dictionary.student_city - a list of dictionary object which dict type is student_city
-      #   Dictionary.student_city(:locale => :zh) - a select format array which can be used
-      #   in view method select as choice params
-      # Programmer DOC && TODO:
-      #   rethink about the cache.
-      #   cache methods like Dictionary.student_city(:locale => :zh,:sort => :name_fr)
-      #   but not cache Dictionary.student_city, return it as relation
+      # Define one singleton method per dict type, replacing the old
+      # method_missing dispatch. Called at boot (Railtie) and whenever a
+      # DictType row is written, so runtime-added categories stay available.
       #
-      #   Remove nil noise,if listed_attr =[[nil, 201], [nil, 203], [nil, 202], ["Sciences", 200]]
-      #   the sort would be failed of ArgumentError: comparison of Array with Array failed
-      #   split this method ,make it more short and maintainance
-      def method_missing(method_id,options={})
-        if ::DictType.all_types.include? method_id
-          method_name=method_id.to_s.downcase
-          # TODO: If cache engine is failed, then the code will failed with null cant dup
-          Rails.cache.fetch("Dictionary.#{method_name}") { dict_type_name_eq(method_name).to_a }
-          listed_attr=Rails.cache.read("Dictionary.#{method_name}").dup  # Instance of ActiveRecord::Relation can not be dup?
-          build_scope_method(method_id)
-          if options.keys.include? :locale or options.keys.include? "locale"
-            locale="name_#{ options[:locale] }"
-            sort_block=sort_dicts(options)
-            listed_attr.sort!(&sort_block) if sort_block
-            listed_attr.map! { |a| [a.send(locale),a.id] }.reject! {|ele| ele.first.nil?}
-          end
-          listed_attr
-        else
-          super
-        end
+      #   Dictionary.student_city               # => [<Dictionary>, ...]
+      #   Dictionary.student_city(locale: :zh)  # => [["北京", 2], ...] for select
+      def reload_dict_methods
+        ::DictType.all_types.each { |name| define_dict_method(name) }
+      end
+
+      # List all distinct categories. Useful for admin UIs.
+      def categories
+        ::DictType.all_types
+      end
+
+      # Add an entry to a category. Returns the created record.
+      #   Dictionary.add(:city, "New York")
+      def add(category, name, attrs = {})
+        dict_type_id = ::DictType.revert(category.to_s)
+        create!(attrs.merge(name_en: name, dict_type_id: dict_type_id))
+      end
+
+      # Remove every entry in a category matching the given name.
+      #   Dictionary.remove(:city, "New York")
+      def remove(category, name)
+        dict_type_id = ::DictType.revert(category.to_s)
+        where(name_en: name, dict_type_id: dict_type_id).destroy_all
+      end
+
+      # Form-ready output for options_for_select: [[label, id], ...].
+      #   Dictionary.options_for(:city, locale: :en)
+      def options_for(category, locale: :en)
+        public_send(category.to_s.downcase)
+          .map { |d| [d.send("name_#{locale}"), d.id] }
+          .reject { |pair| pair.first.nil? }
       end
 
       # Override this method to get customed sort block
@@ -54,11 +61,33 @@ module RailsDictionary
         end
       end
 
-      def respond_to?(name, include_private=false)
-        ::DictType.all_types.include?(name) || super
+      def dict_cache_key(name)
+        "Dictionary.#{connection_db_config.database}.#{name}"
       end
 
       private
+
+      def define_dict_method(method_id)
+        method_name = method_id.to_s.downcase
+        build_scope_method(method_id)
+        define_singleton_method(method_name) do |options = {}|
+          key = dict_cache_key(method_name)
+          Rails.cache.delete(key) if options[:query]
+          Rails.cache.fetch(key) { dict_type_name_eq(method_name).to_a }
+          listed_attr = Rails.cache.read(key).dup
+          if options.keys.include? :locale or options.keys.include? "locale"
+            RailsDictionary.deprecator.warn(
+              "Passing :locale to Dictionary.#{method_name} is deprecated; " \
+              "use Dictionary.options_for(:#{method_name}, locale: ...) instead."
+            )
+            locale = "name_#{ options[:locale] }"
+            sort_block = sort_dicts(options)
+            listed_attr.sort!(&sort_block) if sort_block
+            listed_attr.map! { |a| [a.send(locale), a.id] }.reject! { |ele| ele.first.nil? }
+          end
+          listed_attr
+        end
+      end
 
       def build_scope_method(name)
         scope_method_name = "scoped_#{name}".to_sym
@@ -75,7 +104,7 @@ module RailsDictionary
 
     def delete_dicts_cache
       method_name = ::DictType.revert(self.dict_type_id)
-      Rails.cache.delete("Dictionary.#{method_name}")
+      Rails.cache.delete(self.class.dict_cache_key(method_name))
       return true
     end
   end

@@ -8,7 +8,7 @@ module RailsDictionary
     module ClassMethods
 
       def all_types
-        whole_types ||
+        whole_types.presence ||
           self.whole_types = all.map(&:name).map(&:to_sym)
       end
 
@@ -40,12 +40,13 @@ module RailsDictionary
       #   And add test for this situation
       def tab_and_column
         all_model_class=ActiveRecord::Base.descendants.map(&:name).map(&:underscore)
-        all_types.map(&:to_s).extract_to_hash(all_model_class)
+        RailsDictionary.extract_to_hash(all_types.map(&:to_s), all_model_class)
       end
     end
 
     def delete_all_caches
       self.whole_types = nil
+      RailsDictionary.reload_dict_methods
       return true
     end
   end
