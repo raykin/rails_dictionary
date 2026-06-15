@@ -1,5 +1,9 @@
 = Plan
-Working on sti branch will target to 0.3 version which will not compatible with 0.1 and 0.2
+0.3 (on the main branch) is a non-breaking release on the 0.2 API: it replaces the
+internal method_missing with generated methods, fixes the load-order and cross-DB
+cache bugs, and adds a few convenience methods (see Features). The abandoned STI
+experiment lives on the +sti+ branch. The next breaking rewrite is tracked in
+v1.0-roadmap.md.
 
 = Intro
 There are always some static data(not static page) in application.For example product type or student diploma type.
@@ -8,11 +12,9 @@ This gem can map these static data to a Dictionary#method like Dictionary#studen
 
 = Usage
 == Installation
-Branch sti is used to target version 0.3 which will totall rewrite. The main change is use STI to replace dict_types.
+Version 0.3 supports Rails 7.1–8 and Ruby >= 3.3.
 
-Version 0.2 support Rails4
-
-Version 0.1 support Rails3.1
+Version 0.2 supports Rails 4–7. Version 0.1 supports Rails 3.1.
 
         gem 'rails_dictionary'
 or
@@ -88,17 +90,27 @@ Here is what should be like.Student model can be other models.
    DictType.all_cached #=> return cache of DictType.all
    DictType.all_types = [:student_city,:student_school] # also cached
    Dictionary.student_city #=> [Dictionary.find(5),Dictionary.find(6)]
-student_city is a dynamic method(from method missing) which returns a list of dictionary object which dict_type is "student_city".
-Actually Dictionary will have as many dynamic methods as DictType.count and each dynamic method name is DictType.name.
-And student_city return an array,not ActiveRelation.So
-   Dictionary.student_school = []
-   Dictionary.student_city :locale => :en  #=> [["beijing", 2],["shanghai",1]]
+student_city is a method generated for each DictType (one per DictType.name); it
+returns a list of dictionary objects whose dict_type is "student_city". The methods
+are (re)generated at boot and whenever a DictType is created/destroyed.
+And student_city returns an array,not ActiveRelation.So
+   Dictionary.student_school #=> []
+   Dictionary.student_city(query: true)  #=> bypass the cache and hit the DB
 If you need a ActiveRelation, try scoped_student_city like
    Dictionary.scoped_student_city.where(...)
-You can use it in form select method like
+
+== 0.3 convenience methods
+   Dictionary.categories                       #=> [:student_city, :student_school]
+   Dictionary.add(:student_city, "wuhan")      #=> create entry, returns the record
+   Dictionary.remove(:student_city, "wuhan")   #=> destroy matching entries
+   Dictionary.options_for(:student_city, locale: :en)  #=> [["beijing", 2],["shanghai",1]]
+options_for returns options_for_select-ready pairs and is the replacement for the
+deprecated +Dictionary.student_city(locale: ...)+ form below.
+
+You can use it in a form select like
    collection_select :student,:city,Dictionary.student_city,:id,:name_en
-   select :student,:city,Dictionary.student_city(params)
-If params contains :locale => :fr,it returns a list of french name of student city (from name_fr in Dictioanry)
+   select :student, :city, Dictionary.options_for(:student_city, locale: :fr)
+options_for(:student_city, locale: :fr) returns the french names (from name_fr in Dictionary)
    Student.find(1).named_city = "beijing" # when default locale is :en
 Here is an other solution for international translation.
    Student.find(1).named_city(:zh) = "北京"
@@ -110,7 +122,10 @@ Student has two belongs_to assocition which named as city_dict and school_dict,t
    Student.find(1).city_dict #=> Dictionary.find(6)
 
 === Sort Feature
-Static data need orders frequently,so Dictionary.student_city :locale => :en has a default sort rules.
+Note: passing +:locale+ to the generated lookup (e.g. Dictionary.student_city(locale: :en))
+is deprecated; use Dictionary.options_for(:student_city, locale: :en) instead. The sort
+behavior described here applies to that form.
+
 By default,if the options contains locale,the results are sorted by the name value.
 If locale is :zh,sort rule is order by GBK encoding.
 Other locales are just order by alphabetical without case sensitive.
