@@ -6,6 +6,13 @@ module RailsDictionary
 
     included do
       RailsDictionary.register_dictionary_model(self)
+      # A model loaded after the Railtie's boot-time hook (the common case
+      # under lazy autoloading) would otherwise have no lookup methods until
+      # the next DictType write or reload. Generate them now from current data
+      # so load order between this model and DictType never matters. Skipped
+      # when DictType isn't defined yet (reverse load order) -- the boot hook
+      # or the next DictType write will generate them then.
+      reload_dict_methods if Object.const_defined?(:DictType) && RailsDictionary.dict_table_ready?
     end
 
     class_methods do

@@ -1,3 +1,9 @@
+0.4.0
+  Fix load/seed-order bug introduced in 0.3.0: lookup methods (Dictionary.address_city, ...) failed with NoMethodError when the dictionary model was loaded after its DictType rows were seeded (common in test/seed files under lazy autoloading). The model now generates its own lookups in its acts_as_dictionary `included` hook, so the order of DictType, Dictionary, and seeding no longer matters.
+  Guard the new include-time generation: skipped when DictType isn't defined yet (reverse load order) and when the dict_types table can't be queried (missing/unmigrated DB).
+  Extract RailsDictionary.dict_table_ready? as the shared boot/load guard.
+  Add docs/load-order.md documenting every load/seed-order scenario, and spec/load_order/lazy_slave_model_boot.rb covering the regression.
+
 0.3.0
   Replace the inner Dictionary.method_missing with generated per-type methods (define_singleton_method), regenerated at boot (Railtie) and on DictType writes.
   Fix load-order bug: DictType.all_types no longer freezes as [] when first called on an empty table (use .presence). The config/initializers DictType.table_exists? workaround is no longer needed.

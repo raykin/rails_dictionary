@@ -48,12 +48,18 @@ module RailsDictionary
   # Boot-time entry point (used by the Railtie). Guarded so a missing or
   # unmigrated database during boot, asset builds, or db:create never raises.
   def self.load_dict_methods
-    return unless ActiveRecord::Base.connection.table_exists?("dict_types")
-    reload_dict_methods
+    reload_dict_methods if dict_table_ready?
+  end
+
+  # True only when the dict_types table can actually be queried. Used to guard
+  # method generation so a missing/unmigrated database during boot, asset
+  # builds, or db:create never raises.
+  def self.dict_table_ready?
+    ActiveRecord::Base.connection.table_exists?("dict_types")
   rescue ActiveRecord::NoDatabaseError,
          ActiveRecord::StatementInvalid,
          ActiveRecord::ConnectionNotEstablished
-    nil
+    false
   end
 end
 
